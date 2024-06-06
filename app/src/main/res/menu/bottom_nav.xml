@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <item
+            android:title="Home"
+            android:id="@+id/dashboardID"
+            android:icon="@drawable/baseline_add_home_work_24"/>
+
+        <item
+            android:title="Project"
+            android:id="@+id/projectID"
+            android:icon="@drawable/baseline_add_to_project"/>
+
+        <item
+            android:title="Settings"
+            android:id="@+id/settingsID"
+            android:icon="@drawable/baseline_app_settings_alt_24"/>
+
+</menu>

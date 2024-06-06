@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Welcome">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/welcometxt"
+            android:layout_width="224dp"
+            android:layout_height="74dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="90dp"
+            android:fontFamily="@font/inria_serif_bold"
+            android:text="@string/WelcomeUser"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/workbtn"
+            android:layout_width="77dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="140dp"
+            android:background="@drawable/btncircular"
+            android:backgroundTint="#E39D87"
+            android:contentDescription="@string/Work"
+            android:drawableStart="@drawable/work_on_computer_employee_software_engineer_programmer_svgrepo_com"
+            android:padding="15dp" />
+
+        <Button
+            android:id="@+id/schoolbtn"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-83dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/btncircular"
+            android:backgroundTint="#E39D87"
+            android:contentDescription="@string/School"
+            android:drawableStart="@drawable/school_svgrepo_com"
+            android:padding="15dp" />
+
+        <Button
+            android:id="@+id/generalbtn"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-82dp"
+            android:layout_marginEnd="-120dp"
+            android:background="@drawable/btncircular"
+            android:backgroundTint="#E39D87"
+            android:contentDescription="@string/General"
+            android:drawableStart="@drawable/productivity_ability_talent_productive_svgrepo_com"
+            android:padding="15dp" />
+
+        <TextView
+            android:id="@+id/txtworklbl"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="-135dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/inria_serif_bold"
+            android:text="@string/Work"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtschoollbl"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="-6dp"
+            android:layout_marginTop="-20dp"
+            android:fontFamily="@font/inria_serif_bold"
+            android:text="@string/School"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/txtgenerallbl"
+            android:layout_width="69dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="123dp"
+            android:layout_marginTop="-21dp"
+            android:fontFamily="@font/inria_serif_bold"
+            android:text="@string/General"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtIntro"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="70dp"
+            android:fontFamily="@font/inria_serif_bold"
+            android:text="@string/Introduction"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="124dp"
+            android:layout_height="62dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/roundbtnwhite"
+            android:text="@string/Next"
+            android:textColor="#F15A29" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

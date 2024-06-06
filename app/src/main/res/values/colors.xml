@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name ="lightGrey">#D3D3D3</color>
+    <color name ="silverGrey">#C0C0C0</color>
+    <color name = "darkGrey">#A9A9A9</color>
+    <color name = "grey">#808080</color>
+    <color name = "dimGrey">#696969</color>
+    <color name="whiteGrey">#F2F3F5</color>
+    <color name="orange">#FF3300</color>
+    <color name="orangelight">#FF5500</color>
+    <color name="orangegradient">#954545</color>
+    <color name="backgroundgray">#3A3A3A</color>
+    <color name="piegreen">#00C64F</color>
+    <color name="pieblue">#45629C</color>
+    <color name="pieblack">#161616</color>
+    <color name="Dark_Grey">#3A3A3A</color>
+    <color name="light_grey">#AEAEAE</color>
+
+</resources>

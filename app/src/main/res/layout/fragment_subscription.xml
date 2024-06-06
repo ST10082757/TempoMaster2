@@ -1,0 +1,131 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subscription Plans"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:paddingBottom="16dp"
+            />
+
+            <!-- Basic Plan -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="159dp"
+                    android:layout_height="44dp"
+                    android:text="Basic Plan"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="216dp"
+                    android:layout_height="41dp"
+                    android:paddingTop="8dp"
+                    android:text="Includes basic features"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="173dp"
+                    android:layout_height="46dp"
+                    android:paddingTop="8dp"
+                    android:text="$199.99/month"
+                    android:textColor="@android:color/holo_blue_dark"
+                    android:textSize="18sp" />
+
+            <!-- Button to subscribe -->
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subscribe"
+                android:layout_gravity="end"
+                android:padding="8dp"
+                android:backgroundTint="@android:color/holo_blue_dark"
+                android:textColor="@android:color/white"
+            />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="192dp"
+                android:layout_height="50dp"
+                android:text="Premium Plan"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="297dp"
+                android:layout_height="48dp"
+                android:paddingTop="8dp"
+                android:text="Includes all premium features"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="151dp"
+                android:layout_height="39dp"
+                android:paddingTop="8dp"
+                android:text="R399.99/month"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="18sp" />
+
+            <!-- Button to subscribe -->
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subscribe"
+                android:layout_gravity="end"
+                android:padding="8dp"
+                android:backgroundTint="@android:color/holo_blue_dark"
+                android:textColor="@android:color/white"
+                />
+
+
+
+        </LinearLayout>
+            <Button
+                android:id="@+id/backclick"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="9dp"
+                android:background="@color/darkGrey"
+                android:ems="10"
+                android:layout_marginRight="0dp"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="@string/Back"
+                android:textColor="@color/black"
+                android:textSize="25sp" />
+    </LinearLayout>
+</ScrollView>
+
+    </FrameLayout>

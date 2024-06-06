@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1000628700185",
+    "project_id": "tempo-master",
+    "storage_bucket": "tempo-master.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000628700185:android:690fd32d85175fdc3cd688",
+        "android_client_info": {
+          "package_name": "com.example.tempomaster"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxVGtgmhnIUNG4lJ2qMeRSTmAG8W8W8js"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

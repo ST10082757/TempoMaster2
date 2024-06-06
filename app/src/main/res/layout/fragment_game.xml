@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Dark_Grey">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Color palette at the top for choosing colors -->
+        <LinearLayout
+            android:id="@+id/color_palette"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <!-- unlocked colors -->
+            <Button
+                android:id="@+id/btn_red"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="#FF0000"/>
+
+            <Button
+                android:id="@+id/btn_green"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="#00FF00"/>
+
+            <Button
+                android:id="@+id/btn_blue"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="#0000FF"/>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Coloring Game"
+            android:layout_gravity="center_horizontal"
+            android:textSize="35dp"
+            android:textColor="@color/white"
+            />
+      
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="600dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/imag6" />
+
+        <Button
+            android:id="@+id/backclick"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-48dp"
+            android:background="@color/darkGrey"
+            android:ems="10"
+            android:layout_marginRight="-100dp"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/Back"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+</FrameLayout>
