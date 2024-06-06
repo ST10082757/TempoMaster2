@@ -183,6 +183,5 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
                 startActivity(intent)
             }
         }
-
     }
 }
