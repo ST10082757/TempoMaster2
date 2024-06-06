@@ -15,6 +15,7 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var database: DatabaseReference
 
+    //testing
     var projectCategory : String = ""
 
     var workClickCount = 0
