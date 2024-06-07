@@ -40,11 +40,11 @@ class ExistingProject : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_existing_project)
 
-        // Initialize Firebase Database reference
-        databaseReference = FirebaseDatabase.getInstance().getReference("Projects")
-
         binding = ActivityExistingProjectBinding.inflate(layoutInflater) // Correct binding
         setContentView(binding.root)
+
+        // Initialize Firebase Database reference
+        databaseReference = FirebaseDatabase.getInstance().getReference("Projects")
 
         // Initialize the project list and adapter for part 3
         projectList = mutableListOf()
@@ -58,13 +58,14 @@ class ExistingProject : AppCompatActivity() {
         // Fetch data from Firebase
         fetchProjectsFromFirebase()
 
-            // the list of projects
-            val bundle = intent.extras
-            val date = bundle?.getString("Date")
-            val projectName = bundle?.getString("Project Name")
-            val description = bundle?.getString("Description")
-            val startTime = bundle?.getString("Start Time")
-            val endTime = bundle?.getString("End Time")
+        // Handle the camera intent
+        val image: ImageView = findViewById(R.id.projectPngView)
+        val bitmap = intent.getParcelableExtra<Bitmap>("ProjectImage")
+        if (bitmap != null) {
+            image.setImageBitmap(bitmap)
+        } else {
+            image.setImageResource(R.drawable.ic_launcher_foreground) // Placeholder image
+        }
 
         //----------------------------------NAVIGATION BAR-----------------------------------------//
         // Check initialization of the bottom navigation
@@ -99,32 +100,27 @@ class ExistingProject : AppCompatActivity() {
         setGoal.setOnClickListener{
             iintent.startAddProjectActivity(this,Goals::class.java)
         }
-
-        // Handle the camera intent
-        val image: ImageView = findViewById(R.id.projectPngView)
-        val bitmap = intent.getParcelableExtra<Bitmap>("ProjectImage")
-        image.setImageBitmap(bitmap)
     }
 //--------------------Part 3--------------------------//
 // Fetches the data from the firebase database
-    private fun fetchProjectsFromFirebase() {
-        databaseReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                projectList.clear()
-                for (projectSnapshot in dataSnapshot.children) {
-                    val project = projectSnapshot.getValue(Projects::class.java)
-                    if (project != null) {
-                        projectList.add(project)
-                    }
+private fun fetchProjectsFromFirebase() {
+    databaseReference.addValueEventListener(object : ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            projectList.clear()
+            for (projectSnapshot in dataSnapshot.children) {
+                val project = projectSnapshot.getValue(Projects::class.java)
+                if (project != null) {
+                    projectList.add(project)
                 }
-                projectAdapter.notifyDataSetChanged()
             }
+            projectAdapter.notifyDataSetChanged()
+        }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                Toast.makeText(this@ExistingProject, "Failed to load projects", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
+        override fun onCancelled(databaseError: DatabaseError) {
+            Toast.makeText(this@ExistingProject, "Failed to load projects", Toast.LENGTH_SHORT).show()
+        }
+    })
+}
     class ProjectAdapter(private val projectList: List<Projects>) :
         RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder>() {
 
@@ -135,18 +131,18 @@ class ExistingProject : AppCompatActivity() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectViewHolder {
-            val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_project, parent, false)
-            return ProjectViewHolder(itemView)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_project, parent, false)
+            return ProjectViewHolder(view)
         }
-
         override fun onBindViewHolder(holder: ProjectViewHolder, position: Int) {
-            val currentItem = projectList[position]
-            holder.projectName.text = currentItem.Pname
-            holder.projectDescription.text = currentItem.description
-            holder.projectDates.text = "${currentItem.date} - ${currentItem.endTime}"
+            val project = projectList[position]
+            holder.projectName.text = project.Pname
+            holder.projectDescription.text = project.description
+            holder.projectDates.text = "${project.startTime} - ${project.endTime}"
         }
-        override fun getItemCount() = projectList.size
+        override fun getItemCount(): Int {
+            return projectList.size
+        }
     }
 }
 
