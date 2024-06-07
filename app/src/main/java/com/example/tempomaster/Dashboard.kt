@@ -3,6 +3,7 @@ package com.example.tempomaster
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tempomaster.com.example.tempomaster.ProjectCategory
@@ -16,27 +17,32 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
+        // Set click listeners for buttons
+        findViewById<Button>(R.id.btnwork).setOnClickListener {
+            startActivity(Intent(this, ExistingProject::class.java))
+        }
 
-        binding = ActivityDashboardBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        findViewById<Button>(R.id.btnschool).setOnClickListener {
+            startActivity(Intent(this, ExistingProject::class.java))
+        }
 
-        handleIntentData()
+        findViewById<Button>(R.id.btngeneral).setOnClickListener {
+            startActivity(Intent(this, ExistingProject::class.java))
+        }
 
-        binding.bottomNavigationView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.dashboardID -> { /* Already in Dashboard */ }
-                R.id.settingsID -> {
-                    val intent = Intent(this, Settings::class.java)
-                    startActivity(intent)
-                }
-                R.id.projectID -> {
-                    val intent = Intent(this, ProjectList::class.java)
-                    startActivity(intent)
-                }
-            }
-            true
+        findViewById<Button>(R.id.btnworklogo).setOnClickListener {
+            startActivity(Intent(this, AddProject::class.java))
+        }
+
+        findViewById<Button>(R.id.btnschoolLogo).setOnClickListener {
+            startActivity(Intent(this, AddProject::class.java))
+        }
+
+        findViewById<Button>(R.id.btngeneralLogo).setOnClickListener {
+            startActivity(Intent(this, AddProject::class.java))
         }
     }
+
 
     private fun handleIntentData() {
         intent.extras?.let {
