@@ -11,10 +11,10 @@
        Dont have an account?  <a href="https://www.gmail.com"> Sign up</a>
     </string>
 
-    <string name="Start_Time"> Project Start Time</string>
-    <string name="End_Time">Project End Time</string>
+    <string name="Start_Time"> Start Time:</string>
+    <string name="End_Time"> End Time:</string>
     <string name="Description">Project Description</string>
-    <string name="Name">Project Name</string>
+    <string name="Name">Project Name:</string>
     <string name="Category">Project Category</string>
     <string name="Add_Project">Add Project</string>
     <string name="Existing">Existing Projects</string>

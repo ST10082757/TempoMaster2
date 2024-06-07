@@ -204,17 +204,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Project Name: "
+                    android:text="@string/Name"
                     android:textColor="@android:color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/txtProjectTimeLeft"
+                    android:id="@+id/txtProjectStartTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Time Left: "
+                    android:text="@string/Start_Time"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/txtProjectEndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/End_Time"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
