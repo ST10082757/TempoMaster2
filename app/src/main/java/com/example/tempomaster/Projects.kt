@@ -16,18 +16,18 @@ class Projects {
 
 
     // Primary constructor
-    constructor()
+   // constructor()
 //---------------------------------------------------------------------
 
     // Secondary constructor with all parameters
-    constructor(date: String,Pname: String, startTime: String, endTime: String, description: String, category: String) : this() {
-        this.date = date
-        this.Pname = Pname
-        this.startTime = startTime
-        this.endTime = endTime
-        this.description = description
-        this.category = category
-    }
+   // constructor(date: String,Pname: String, startTime: String, endTime: String, description: String, category: String) : this() {
+       // this.date = date
+      //  this.Pname = Pname
+      //  this.startTime = startTime
+      //  this.endTime = endTime
+      //  this.description = description
+      //  this.category = category
+    //}
 /*This method is called when a date is selected in the DatePickerDialog
 
 fun setDate(date: String)

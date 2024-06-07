@@ -8,15 +8,30 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import android.graphics.Bitmap
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import com.example.tempomaster.databinding.ActivityExistingProjectBinding
-
+// part 3
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import java.util.ArrayList
 
 class ExistingProject : AppCompatActivity() {
     private var iintent = TheIntentHelper()
+    // Part 3
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var projectAdapter: ProjectAdapter
+    private lateinit var projectList: MutableList<Projects>
+    private lateinit var databaseReference: DatabaseReference
 
     private lateinit var binding: ActivityExistingProjectBinding
 
@@ -25,13 +40,24 @@ class ExistingProject : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_existing_project)
 
+        // Initialize Firebase Database reference
+        databaseReference = FirebaseDatabase.getInstance().getReference("Projects")
+
         binding = ActivityExistingProjectBinding.inflate(layoutInflater) // Correct binding
         setContentView(binding.root)
 
-        //ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            //val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-           // v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-           // insets
+        // Initialize the project list and adapter for part 3
+        projectList = mutableListOf()
+        projectAdapter = ProjectAdapter(projectList)
+
+        // Set up RecyclerView
+        recyclerView = binding.recyclerView
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = projectAdapter
+
+        // Fetch data from Firebase
+        fetchProjectsFromFirebase()
+
             // the list of projects
             val bundle = intent.extras
             val date = bundle?.getString("Date")
@@ -40,32 +66,6 @@ class ExistingProject : AppCompatActivity() {
             val startTime = bundle?.getString("Start Time")
             val endTime = bundle?.getString("End Time")
 
-        //displaying the projects in a ListView
-        val listOfProjects : ListView = findViewById(R.id.ListOfProjects)
-        val projectList = arrayListOf("$projectName, $description, $date, $startTime, $endTime")
-    /*
-    this= referring to the current Activity
-    android.R.layout.simple_list_item_1= This is a built-in layout provided by
-    Android Studio that represents a single item in the list.
-    projectList= This is the data(project details) that the adapter will use to fill the ListView
-     */
-                val adapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,projectList )
-                listOfProjects.adapter = adapter
-
-        val deleteBtn = findViewById<Button>(R.id.DeleteBtn)
-        deleteBtn.setOnClickListener{
-            //based on what is chosen
-            val selectedItemPosition = listOfProjects.checkedItemPosition
-            if(selectedItemPosition != ListView.INVALID_POSITION){
-                //delete the project chosen
-                projectList.removeAt(selectedItemPosition)
-
-                //toast message alerting the user
-                adapter.notifyDataSetChanged()} else{
-                Toast.makeText(this,"No items selected", Toast.LENGTH_SHORT).show()
-            }
-
-        }
         //----------------------------------NAVIGATION BAR-----------------------------------------//
         // Check initialization of the bottom navigation
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
@@ -100,11 +100,53 @@ class ExistingProject : AppCompatActivity() {
             iintent.startAddProjectActivity(this,Goals::class.java)
         }
 
-        //for the camera intent
-        val image : ImageView = findViewById(R.id.projectPngView)
+        // Handle the camera intent
+        val image: ImageView = findViewById(R.id.projectPngView)
         val bitmap = intent.getParcelableExtra<Bitmap>("ProjectImage")
         image.setImageBitmap(bitmap)
+    }
+//--------------------Part 3--------------------------//
+// Fetches the data from the firebase database
+    private fun fetchProjectsFromFirebase() {
+        databaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                projectList.clear()
+                for (projectSnapshot in dataSnapshot.children) {
+                    val project = projectSnapshot.getValue(Projects::class.java)
+                    if (project != null) {
+                        projectList.add(project)
+                    }
+                }
+                projectAdapter.notifyDataSetChanged()
+            }
 
+            override fun onCancelled(databaseError: DatabaseError) {
+                Toast.makeText(this@ExistingProject, "Failed to load projects", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+    class ProjectAdapter(private val projectList: List<Projects>) :
+        RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder>() {
+
+        inner class ProjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val projectName: TextView = itemView.findViewById(R.id.projectName)
+            val projectDescription: TextView = itemView.findViewById(R.id.projectDescription)
+            val projectDates: TextView = itemView.findViewById(R.id.projectDates)
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectViewHolder {
+            val itemView = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_project, parent, false)
+            return ProjectViewHolder(itemView)
+        }
+
+        override fun onBindViewHolder(holder: ProjectViewHolder, position: Int) {
+            val currentItem = projectList[position]
+            holder.projectName.text = currentItem.Pname
+            holder.projectDescription.text = currentItem.description
+            holder.projectDates.text = "${currentItem.date} - ${currentItem.endTime}"
+        }
+        override fun getItemCount() = projectList.size
     }
 }
 
