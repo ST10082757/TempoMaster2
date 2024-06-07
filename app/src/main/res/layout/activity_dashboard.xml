@@ -188,111 +188,65 @@
             android:layout_width="300dp"
             android:layout_height="250dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="0dp"
+            android:layout_marginBottom="20dp"
             app:cardBackgroundColor="@color/black"
             app:cardCornerRadius="20dp">
 
-            <Button
-                android:id="@+id/pieBtn"
-                android:layout_width="150dp"
-                android:layout_height="120dp"
-                android:layout_marginTop="100dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/pie" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:gravity="top|center_horizontal">
 
-            <EditText
-                android:id="@+id/txtProjectTimeSpent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="70dp"
-                android:layout_marginTop="-60dp"
-                android:fontFamily="@font/inria_serif_light"
-                android:hint="@string/Hint2"
-                android:textColor="@android:color/white"
-                android:textColorHint="@color/orangegradient"
-                android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/txtProjectName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/Name"
+                    android:textColor="@color/orangegradient"
+                    android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/txtProjectTimeLeft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="70dp"
-                android:layout_marginTop="-25dp"
-                android:fontFamily="@font/inria_serif_light"
-                android:hint="@string/Hint3"
-                android:textColor="@android:color/white"
-                android:textColorHint="@color/orangegradient"
-                android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/txtProjectStartTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/Start_Time"
+                    android:textColor="@color/orangegradient"
+                    android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/txtProjectName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="70dp"
-                android:layout_marginTop="-95dp"
-                android:fontFamily="@font/inria_serif_light"
-                android:hint="@string/Hint1"
-                android:textColor="@android:color/white"
-                android:textColorHint="@color/orangegradient"
-                android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/txtProjectEndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/End_Time"
+                    android:textColor="@color/orangegradient"
+                    android:textSize="16sp" />
 
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="-80dp"
-                android:layout_marginTop="-100dp"
-                android:text="@string/Name"
-                android:textColor="@android:color/white" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="120dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="-70dp"
-                android:layout_marginTop="-60dp"
-                android:text="@string/TimeSpent"
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="155dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="-50dp"
-                android:layout_marginTop="-20dp"
-                android:text="@string/TimeLeft"
-                android:textColor="@android:color/white"
-                android:textSize="12sp" />
-
-            <Button
-                android:id="@+id/btnSubmit"
-                android:layout_width="wrap_content"
-                android:layout_height="27dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="220dp"
-                android:background="@color/orange"
-                android:text="@string/Submit"
-                android:textColor="@android:color/black" />
         </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/gameBtn"
             android:layout_width="70dp"
             android:layout_height="50dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="-10dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/img" />
 
-        <Button
-            android:id="@+id/projectListBT"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Project List" />
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

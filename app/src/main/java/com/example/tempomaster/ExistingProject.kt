@@ -145,3 +145,7 @@ private fun fetchProjectsFromFirebase() {
         }
     }
 }
+
+private fun TheIntentHelper.startAddProjectActivity(context: ExistingProject, activityToOpen: Class<Goals>) {
+
+}

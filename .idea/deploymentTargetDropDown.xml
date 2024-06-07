@@ -10,12 +10,16 @@
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
+
                   <value value="C:\Users\anter\.android\avd\Zacarias_API_34.avd" />
+
                 </Key>
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
+          
           <timeTargetWasSelectedWithDropDown value="2024-06-07T16:32:46.879243400Z" />
+
         </State>
       </entry>
     </value>
