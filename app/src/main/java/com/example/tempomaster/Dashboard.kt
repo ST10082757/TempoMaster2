@@ -3,6 +3,7 @@ package com.example.tempomaster
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tempomaster.com.example.tempomaster.ProjectCategory
@@ -15,30 +16,36 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
    // private lateinit var database: DatabaseReference
     private lateinit var binding: ActivityDashboardBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dashboard)
+    class Dashboard : AppCompatActivity() {
 
-     //   firebaseAuth = FirebaseAuth.getInstance()
-     //   database = FirebaseDatabase.getInstance().reference
-        binding = ActivityDashboardBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_dashboard)
 
-        handleIntentData()
-
-        binding.bottomNavigationView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.dashboardID -> { /* Already in Dashboard */ }
-                R.id.settingsID -> {
-                    val intent = Intent(this, Settings::class.java)
-                    startActivity(intent)
-                }
-                R.id.projectID -> {
-                    val intent = Intent(this, ProjectList::class.java)
-                    startActivity(intent)
-                }
+            // Set click listeners for buttons
+            findViewById<Button>(R.id.btnwork).setOnClickListener {
+                startActivity(Intent(this, ExistingProject::class.java))
             }
-            true
+
+            findViewById<Button>(R.id.btnschool).setOnClickListener {
+                startActivity(Intent(this, ExistingProject::class.java))
+            }
+
+            findViewById<Button>(R.id.btngeneral).setOnClickListener {
+                startActivity(Intent(this, ExistingProject::class.java))
+            }
+
+            findViewById<Button>(R.id.btnworklogo).setOnClickListener {
+                startActivity(Intent(this, AddProject::class.java))
+            }
+
+            findViewById<Button>(R.id.btnschoolLogo).setOnClickListener {
+                startActivity(Intent(this, AddProject::class.java))
+            }
+
+            findViewById<Button>(R.id.btngeneralLogo).setOnClickListener {
+                startActivity(Intent(this, AddProject::class.java))
+            }
         }
     }
 

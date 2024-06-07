@@ -59,6 +59,14 @@ class AddProject : AppCompatActivity() {
                 }
             }
         }
+
+        // Add the return button click listener
+        val backButton = findViewById<Button>(R.id.backclick)
+        backButton.setOnClickListener {
+            val intent = Intent(this, Dashboard::class.java)
+            startActivity(intent)
+            finish() // Optional: Call finish() if you want to close the current activity
+        }
     }
 
     private fun validateInputs(
