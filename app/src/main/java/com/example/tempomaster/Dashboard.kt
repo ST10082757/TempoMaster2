@@ -7,20 +7,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tempomaster.com.example.tempomaster.ProjectCategory
 import com.example.tempomaster.databinding.ActivityDashboardBinding
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
 
 class Dashboard : AppCompatActivity(), View.OnClickListener {
-   // private lateinit var firebaseAuth: FirebaseAuth
-   // private lateinit var database: DatabaseReference
+
     private lateinit var binding: ActivityDashboardBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
-     //   firebaseAuth = FirebaseAuth.getInstance()
-     //   database = FirebaseDatabase.getInstance().reference
+
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -44,11 +40,15 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
 
     private fun handleIntentData() {
         intent.extras?.let {
-            val projectName = it.getString("ProjectName")
-            val timeLeft = it.getString("TimeLeft")
+            val projectName = it.getString("Project Name")
+            val startTime = it.getString("Start Time")
+            val endTime = it.getString("End Time")
 
-            binding.txtProjectName.text = projectName
-            binding.txtProjectTimeLeft.text = "Time Left: $timeLeft"
+            binding.txtProjectName.text = "Project name: $projectName"
+            binding.txtProjectStartTime.text = "Start Time: $startTime"
+            binding.txtProjectEndTime.text = "End Time: $endTime"
+
+
         }
     }
 
