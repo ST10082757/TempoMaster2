@@ -74,7 +74,7 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
             }
             true
         }
-    }
+
 
     //method that gets data from add project and displays on recent project card view
 
