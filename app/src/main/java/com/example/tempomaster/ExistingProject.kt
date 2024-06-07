@@ -107,3 +107,7 @@ class ExistingProject : AppCompatActivity() {
 
     }
 }
+
+private fun TheIntentHelper.startAddProjectActivity(context: ExistingProject, activityToOpen: Class<Goals>) {
+
+}
