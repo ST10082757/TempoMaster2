@@ -19,7 +19,6 @@ class AddProject : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         enableEdgeToEdge()
         binding = ActivityAddProjectBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -42,17 +41,56 @@ class AddProject : AppCompatActivity() {
                     val startTime = startTimeInput.text.toString()
                     val endTime = endTimeInput.text.toString()
 
+                    if (validateInputs(projectName, description, startTime, endTime)) {
+                        val timeLeft = calculateTimeLeft(startTime, endTime)
 
-                    val bundle = Bundle()
-                    bundle.putString("Date", date)
-                    bundle.putString("Project Name", projectName)
-                    bundle.putString("Description", description)
-                    bundle.putString("Start Time", startTime)
-                    bundle.putString("End Time", endTime)
+                        val bundle = Bundle()
+                        bundle.putString("Date", date)
+                        bundle.putString("Project Name", projectName)
+                        bundle.putString("Description", description)
+                        bundle.putString("Start Time", startTime)
+                        bundle.putString("End Time", endTime)
+                        bundle.putString("Time Left", timeLeft)
 
-                    intentHelper.startExistingProjectActivity(this, Dashboard::class.java, bundle)
+                        intentHelper.startExistingProjectActivity(this, ExistingProject::class.java, bundle)
+                    }
                 } else {
                     Toast.makeText(this, "Date is null", Toast.LENGTH_SHORT).show()
                 }
             }
-        }}}
+        }
+
+        // Add the return button click listener
+        val backButton = findViewById<Button>(R.id.backclick)
+        backButton.setOnClickListener {
+            val intent = Intent(this, Dashboard::class.java)
+            startActivity(intent)
+            finish() // Optional: Call finish() if you want to close the current activity
+        }
+    }
+
+    private fun validateInputs(
+        projectName: String,
+        description: String,
+        startTime: String,
+        endTime: String
+    ): Boolean {
+        if (projectName.isBlank() || description.isBlank() || startTime.isBlank() || endTime.isBlank()) {
+            Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
+    }
+
+    private fun calculateTimeLeft(startTime: String, endTime: String): String {
+        val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val start = sdf.parse(startTime)
+        val end = sdf.parse(endTime)
+        val diffInMillis = end.time - start.time
+
+        val hours = (diffInMillis / (1000 * 60 * 60)).toInt()
+        val minutes = (diffInMillis / (1000 * 60) % 60).toInt()
+
+        return "$hours hours $minutes minutes"
+    }
+}

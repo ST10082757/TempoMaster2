@@ -3,6 +3,7 @@ package com.example.tempomaster
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tempomaster.com.example.tempomaster.ProjectCategory
@@ -22,9 +23,15 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
+        // Set click listeners for buttons
+        findViewById<Button>(R.id.btnwork).setOnClickListener {
+            startActivity(Intent(this, ExistingProject::class.java))
+        }
 
-        binding = ActivityDashboardBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        findViewById<Button>(R.id.btnschool).setOnClickListener {
+            startActivity(Intent(this, ExistingProject::class.java))
+        }
+
 
         //instantiating intent class
         handleIntentData()
@@ -70,6 +77,26 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
     }
 
     //method that gets data from add project and displays on recent project card view
+
+        findViewById<Button>(R.id.btngeneral).setOnClickListener {
+            startActivity(Intent(this, ExistingProject::class.java))
+        }
+
+        findViewById<Button>(R.id.btnworklogo).setOnClickListener {
+            startActivity(Intent(this, AddProject::class.java))
+        }
+
+        findViewById<Button>(R.id.btnschoolLogo).setOnClickListener {
+            startActivity(Intent(this, AddProject::class.java))
+        }
+
+        findViewById<Button>(R.id.btngeneralLogo).setOnClickListener {
+            startActivity(Intent(this, AddProject::class.java))
+        }
+    }
+
+
+
     private fun handleIntentData() {
         intent.extras?.let {
             val projectName = it.getString("Project Name")
