@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tempomaster.com.example.tempomaster.ProjectCategory
-import com.example.tempomaster.com.example.tempomaster.openIntent
 import com.example.tempomaster.databinding.ActivityWelcomeBinding
 
 
@@ -40,7 +39,7 @@ class Welcome : AppCompatActivity() , View.OnClickListener {
                 // Show a toast indicating the user has not made a selection
                 Toast.makeText(this@Welcome, "Please select a category", Toast.LENGTH_SHORT).show()
             } else {
-                val intent = Intent(this, Dashboard::class.java)
+                val intent = Intent(this, AddProject::class.java)
                 intent.putExtra("workClickCount", if (project.projectCategory == "Work") 1 else 0)
                 intent.putExtra("schoolClickCount", if (project.projectCategory == "School") 1 else 0)
                 intent.putExtra("generalClickCount", if (project.projectCategory == "General") 1 else 0)
