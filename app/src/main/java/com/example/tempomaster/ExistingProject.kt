@@ -40,9 +40,9 @@ class ExistingProject : AppCompatActivity() {
             val startTime = bundle?.getString("Start Time")
             val endTime = bundle?.getString("End Time")
 
-            //displaying the projects in a ListView
-            val listOfProjects : ListView = findViewById(R.id.ListOfProjects)
-                val projectList = arrayListOf("$projectName, $description, $date, $startTime, $endTime")
+        //displaying the projects in a ListView
+        val listOfProjects : ListView = findViewById(R.id.ListOfProjects)
+        val projectList = arrayListOf("$projectName, $description, $date, $startTime, $endTime")
     /*
     this= referring to the current Activity
     android.R.layout.simple_list_item_1= This is a built-in layout provided by
