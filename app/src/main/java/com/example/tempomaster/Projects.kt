@@ -1,5 +1,7 @@
 package com.example.tempomaster
 
+import android.graphics.Bitmap
+
 class Projects {
     //private var _date: String = ""
 
@@ -12,8 +14,8 @@ class Projects {
     lateinit var startTime: String
     lateinit var endTime: String
     lateinit var description: String
-    lateinit var category: String
-
+    lateinit var image: Bitmap
+    //lateinit var timeLeft: String
 
     // Primary constructor
    // constructor()
