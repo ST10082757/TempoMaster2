@@ -23,7 +23,7 @@ class TheIntentHelper {
         context.startActivity(intent)
     }
 
-    fun shareProjectDetails(context: Context, projects: Projects) {
+    /*fun shareProjectDetails(context: Context, projects: Projects) {
         val sendIntent = Intent()
         sendIntent.action = Intent.ACTION_SEND
         val shareProjectDetails = Bundle()
@@ -39,7 +39,7 @@ class TheIntentHelper {
 
         val shareIntent = Intent.createChooser(sendIntent, null)
         context.startActivity(shareIntent)
-    }
+    }*/
 
     fun startAddProjectActivity(context: ExistingProject, activityToOpen: Class<Dashboard>) {
 
