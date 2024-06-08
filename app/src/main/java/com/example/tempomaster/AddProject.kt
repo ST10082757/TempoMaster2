@@ -24,6 +24,31 @@ class AddProject : AppCompatActivity() {
         binding = ActivityAddProjectBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //----------------------------------NAVIGATION BAR-----------------------------------------//
+        // Check initialization of the bottom navigation
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.dashboardID -> {
+                    val intent = Intent(this, Dashboard::class.java)
+                    startActivity(intent)
+                }
+                R.id.settingsID -> {
+                    val intent = Intent(this, Settings::class.java)
+                    startActivity(intent)
+                }
+                R.id.projectID -> {
+                    val intent = Intent(this, ExistingProject::class.java)
+                    startActivity(intent)
+                }
+                R.id.projectID -> {
+                    val intent = Intent(this, ExistingProject::class.java)
+                    startActivity(intent)
+                }
+                else -> false // Unhandled case
+            }
+            true // Indicate successful handling
+        }
+
         calendarView = findViewById(R.id.projectCalendar)
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val dateSelected = "$dayOfMonth-${month + 1}-$year"
