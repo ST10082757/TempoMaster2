@@ -20,6 +20,7 @@ import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import android.net.Uri
+import com.google.firebase.storage.FirebaseStorage
 
 class AddProject : AppCompatActivity() {
     private lateinit var calendarView: CalendarView
@@ -68,7 +69,8 @@ class AddProject : AppCompatActivity() {
                         
                         saveProjectToFirebase(date, projectName, description, startTime, endTime, timeLeft, capturedImage)
                         //saveProjectToFirebase(date,projectName, description, startTime, endTime, timeLeft, image = capturedImage )
-                        //intentHelper.startExistingProjectActivity(this, ExistingProject::class.java, bundle)
+                        
+					//intentHelper.startExistingProjectActivity(this, ExistingProject::class.java, bundle)
                     }
                 } else {
                     Toast.makeText(this, "Date is null", Toast.LENGTH_SHORT).show()
@@ -171,16 +173,25 @@ class AddProject : AppCompatActivity() {
                 }
             }.addOnFailureListener {
                 Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
+                navigateToDashboard()
             }
         } else {
             projectsRef.child(projectId).setValue(project).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(this, "Project saved successfully", Toast.LENGTH_SHORT).show()
+                navigateToDashboard() //after project is saved, user is navigated back to dashboard
                 } else {
                     Toast.makeText(this, "Failed to save project", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+    }
+    
+    //--------after project input, navigate back to dashboard
+    private fun navigateToDashboard() {
+        val intent = Intent(this, Dashboard::class.java)
+        startActivity(intent)
+        finish() // Close the current activity
     }
     private fun validateInputs(
         projectName: String,
