@@ -18,6 +18,7 @@ import com.example.tempomaster.databinding.ActivityExistingProjectBinding
 // part 3
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -104,30 +105,36 @@ class ExistingProject : AppCompatActivity() {
 //--------------------Part 3--------------------------//
 // Fetches the data from the firebase database
 private fun fetchProjectsFromFirebase() {
-    databaseReference.addValueEventListener(object : ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            projectList.clear()
-            for (projectSnapshot in dataSnapshot.children) {
-                val project = projectSnapshot.getValue(Projects::class.java)
-                if (project != null) {
-                    projectList.add(project)
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
+    if (userId != null) {
+        databaseReference.orderByChild("userId").equalTo(userId).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                projectList.clear()
+                for (projectSnapshot in dataSnapshot.children) {
+                    val project = projectSnapshot.getValue(Projects::class.java)
+                    if (project != null) {
+                        projectList.add(project)
+                    }
                 }
+                projectAdapter.notifyDataSetChanged()
             }
-            projectAdapter.notifyDataSetChanged()
-        }
 
-        override fun onCancelled(databaseError: DatabaseError) {
-            Toast.makeText(this@ExistingProject, "Failed to load projects", Toast.LENGTH_SHORT).show()
-        }
-    })
+            override fun onCancelled(databaseError: DatabaseError) {
+                Toast.makeText(this@ExistingProject, "Failed to load projects", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
 }
+
     class ProjectAdapter(private val projectList: List<Projects>) :
         RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder>() {
 
         inner class ProjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val projectName: TextView = itemView.findViewById(R.id.projectName)
             val projectDescription: TextView = itemView.findViewById(R.id.projectDescription)
-            val projectDates: TextView = itemView.findViewById(R.id.projectDates)
+            val startDate: TextView = itemView.findViewById(R.id.startDate)
+            val endDate: TextView = itemView.findViewById(R.id.endDate)
+            val category: TextView = itemView.findViewById(R.id.category)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectViewHolder {
@@ -138,7 +145,8 @@ private fun fetchProjectsFromFirebase() {
             val project = projectList[position]
             holder.projectName.text = project.Pname
             holder.projectDescription.text = project.description
-            holder.projectDates.text = "${project.startTime} - ${project.endTime}"
+            holder.startDate.text = project.startTime
+            holder.endDate.text = project.endTime
         }
         override fun getItemCount(): Int {
             return projectList.size

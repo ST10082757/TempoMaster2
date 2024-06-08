@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tempomaster.databinding.ActivityAddProjectBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.util.*
@@ -44,6 +45,7 @@ class AddProject : AppCompatActivity() {
             val startTime = binding.txtstartTime.text.toString()
             val endTime = binding.txtEndTime.text.toString()
             val category = binding.spinnerCategory.selectedItem.toString()
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
 
             if (projectName.isNotEmpty() && description.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty() && category.isNotEmpty() && dateSelected.isNotEmpty()) {
                 val project = Project(projectName, description, dateSelected, startTime, endTime, category)

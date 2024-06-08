@@ -7,6 +7,7 @@ package com.example.tempomaster
     lateinit var endTime: String
     lateinit var description: String
     lateinit var category: String
+     val userId: String = ""
 }
 data class Project(
     val projectName: String = "",
