@@ -1,21 +1,35 @@
 package com.example.tempomaster
 
+import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Button
 import android.widget.CalendarView
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tempomaster.databinding.ActivityAddProjectBinding
+import com.google.firebase.database.FirebaseDatabase
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import android.net.Uri
 
 class AddProject : AppCompatActivity() {
     private lateinit var calendarView: CalendarView
     private lateinit var binding: ActivityAddProjectBinding
     private val intentHelper = TheIntentHelper()
+    //for the camera
+    private val requestImageCapture = 1
+    //for the image
+    private var capturedImage: Bitmap? = null
+    private lateinit var camLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,8 +65,10 @@ class AddProject : AppCompatActivity() {
                         bundle.putString("Start Time", startTime)
                         bundle.putString("End Time", endTime)
                         bundle.putString("Time Left", timeLeft)
-
-                        intentHelper.startExistingProjectActivity(this, ExistingProject::class.java, bundle)
+                        
+                        saveProjectToFirebase(date, projectName, description, startTime, endTime, timeLeft, capturedImage)
+                        //saveProjectToFirebase(date,projectName, description, startTime, endTime, timeLeft, image = capturedImage )
+                        //intentHelper.startExistingProjectActivity(this, ExistingProject::class.java, bundle)
                     }
                 } else {
                     Toast.makeText(this, "Date is null", Toast.LENGTH_SHORT).show()
@@ -67,8 +83,105 @@ class AddProject : AppCompatActivity() {
             startActivity(intent)
             finish() // Optional: Call finish() if you want to close the current activity
         }
+//------------------------------camera feature---------
+        /*
+   Using the button for camera. Val variable has been created
+   because a button click action must occur when a user clicks
+   on 'Take A Photo'.
+	*/
+        val camButton = findViewById<Button>(R.id.cameraBtn)
+        
+        
+        /*
+		checking if the camera
+		button is pressed. If so, whatever was captured is retrieved
+		in captured image from the Intent, and is casted it to a Bitmap
+		 */
+        val cameraLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    
+                    val data: Intent? = result.data
+                    capturedImage = data?.extras?.get("data") as? Bitmap
+                    
+                    // Displaying the image in an ImageView on "ExistingProjects"
+                   // val ProjectImage = findViewById<ImageView>(R.id.ProjectImageView)
+                    //ProjectImage.setImageBitmap(capturedImage)
+                    
+                    //Alerting user the image was taken
+                    Toast.makeText(this, "Picture taken", Toast.LENGTH_SHORT).show()
+                } else {
+                    
+                    //Alerting user the image could not be taken
+                    Toast.makeText(this, "Camera capture canceled", Toast.LENGTH_SHORT).show()
+                }
+                camButton.setOnClickListener {
+                    val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    if (callCameraIntent.resolveActivity(packageManager) != null) {
+                        camLauncher.launch(callCameraIntent)
+                    }
+                    
+                }
+            }
     }
-
+//-----------------saving to firebase method----------------
+    
+    private fun saveProjectToFirebase(
+        date: String,
+        projectName: String,
+        description: String,
+        startTime: String,
+        endTime: String,
+        timeLeft: String,
+        image: Bitmap?
+    ) {
+        
+        //database and projectRef is needed to save a input into projects on firebase
+        val database = FirebaseDatabase.getInstance()
+        val projectsRef = database.getReference("projects")
+        
+        val projectId = projectsRef.push().key ?: UUID.randomUUID().toString()
+        val project = Projects(date, projectName, description, startTime, endTime, timeLeft)
+        
+        //checking whether the image was taken or not on order to store it
+        if (image != null) {
+            val storage = FirebaseStorage.getInstance()
+            val storageRef = storage.reference.child("images/$projectId.jpg")
+            
+            //conversions to enable the image to be in a code version
+            val bass = ByteArrayOutputStream()
+            image.compress(Bitmap.CompressFormat.JPEG, 100, bass)
+            val data = bass.toByteArray()
+            
+            //actually storing the image
+            val uploadTask = storageRef.putBytes(data)
+            uploadTask.addOnSuccessListener {
+                storageRef.downloadUrl.addOnSuccessListener { uri ->
+                    project.imageUrl = uri.toString()
+                    projectsRef.child(projectId).setValue(project).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(this, "Project saved successfully", Toast.LENGTH_SHORT)
+                                .show()
+                        } else {
+                            
+                            Toast.makeText(this, "Failed to save project", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                }
+            }.addOnFailureListener {
+                Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            projectsRef.child(projectId).setValue(project).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(this, "Project saved successfully", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Failed to save project", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
     private fun validateInputs(
         projectName: String,
         description: String,
@@ -93,4 +206,14 @@ class AddProject : AppCompatActivity() {
 
         return "$hours hours $minutes minutes"
     }
+    
+    data class Projects(
+        val date: String,
+        val projectName: String,
+        val description: String,
+        val startTime: String,
+        val endTime: String,
+        val timeLeft: String,
+        var imageUrl: String? = null // Make sure to initialize the imageUrl as null
+    )
 }
