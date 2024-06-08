@@ -1,5 +1,8 @@
 package com.example.tempomaster
 
+
+ class Projects {
+
 import android.graphics.Bitmap
 
 class Projects {
@@ -9,11 +12,23 @@ class Projects {
     *this. helps to access members (methods or variables) of the current
     * object from within an instance method or a constructor.
     */
+
     lateinit var date: String
     lateinit var Pname : String
     lateinit var startTime: String
     lateinit var endTime: String
     lateinit var description: String
+    lateinit var category: String
+     val userId: String = ""
+}
+data class Project(
+    val projectName: String = "",
+    val description: String = "",
+    val date: String = "",
+    val startTime: String = "",
+    val endTime: String = "",
+    val category: String = ""
+)
     lateinit var image: Bitmap
     //lateinit var timeLeft: String
 

@@ -44,4 +44,12 @@ class TheIntentHelper {
     fun startAddProjectActivity(context: ExistingProject, activityToOpen: Class<Dashboard>) {
 
     }
+
+    fun goBack(addProject: AddProject) {
+
+    }
+
+    fun startCameraActivity(addProject: AddProject) {
+
+    }
 }
