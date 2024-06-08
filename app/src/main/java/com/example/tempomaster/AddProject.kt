@@ -1,21 +1,22 @@
 package com.example.tempomaster
 
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.CalendarView
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tempomaster.databinding.ActivityAddProjectBinding
-import java.text.SimpleDateFormat
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import java.util.*
 
 class AddProject : AppCompatActivity() {
-    private lateinit var calendarView: CalendarView
     private lateinit var binding: ActivityAddProjectBinding
+    private lateinit var databaseReference: DatabaseReference
     private val intentHelper = TheIntentHelper()
+    private var dateSelected: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,60 +25,88 @@ class AddProject : AppCompatActivity() {
         binding = ActivityAddProjectBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //----------------------------------NAVIGATION BAR-----------------------------------------//
-        // Check initialization of the bottom navigation
+        // Initialize Firebase Database reference
+        databaseReference = FirebaseDatabase.getInstance().reference.child("projects")
+
+        // Set up the CalendarView
+        binding.projectCalendar.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            dateSelected = "$dayOfMonth-${month + 1}-$year"
+        }
+
+        // Set up the Time pickers
+        binding.txtstartTime.setOnClickListener { showTimePicker { time -> binding.txtstartTime.setText(time) } }
+        binding.txtEndTime.setOnClickListener { showTimePicker { time -> binding.txtEndTime.setText(time) } }
+
+        // Add project button
+        binding.clickAddPrj.setOnClickListener {
+            val projectName = binding.AddProjName.text.toString()
+            val description = binding.Descriptiontxt.text.toString()
+            val startTime = binding.txtstartTime.text.toString()
+            val endTime = binding.txtEndTime.text.toString()
+            val category = binding.spinnerCategory.selectedItem.toString()
+
+            if (projectName.isNotEmpty() && description.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty() && category.isNotEmpty() && dateSelected.isNotEmpty()) {
+                val project = Project(projectName, description, dateSelected, startTime, endTime, category)
+                databaseReference.push().setValue(project)
+                    .addOnSuccessListener {
+                        Toast.makeText(this@AddProject, "Project added successfully", Toast.LENGTH_SHORT).show()
+                        clearFields()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this@AddProject, "Failed to add project", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Back button
+        binding.backclick.setOnClickListener {
+            intentHelper.goBack(this)
+        }
+
+        // Camera button
+        binding.cameraBtn.setOnClickListener {
+            intentHelper.startCameraActivity(this)
+        }
+
+        // Bottom navigation bar
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.dashboardID -> {
-                    val intent = Intent(this, Dashboard::class.java)
-                    startActivity(intent)
+                    startActivity(Intent(this, Dashboard::class.java))
+                    true
                 }
                 R.id.settingsID -> {
-                    val intent = Intent(this, Settings::class.java)
-                    startActivity(intent)
+                    startActivity(Intent(this, Settings::class.java))
+                    true
                 }
                 R.id.projectID -> {
-                    val intent = Intent(this, ExistingProject::class.java)
-                    startActivity(intent)
+                    startActivity(Intent(this, ExistingProject::class.java))
+                    true
                 }
-                R.id.projectID -> {
-                    val intent = Intent(this, ExistingProject::class.java)
-                    startActivity(intent)
-                }
-                else -> false // Unhandled case
+                else -> false
             }
-            true // Indicate successful handling
         }
+    }
 
-        calendarView = findViewById(R.id.projectCalendar)
-        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            val dateSelected = "$dayOfMonth-${month + 1}-$year"
+    private fun showTimePicker(onTimeSelected: (String) -> Unit) {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
 
-            val projectNameInput = findViewById<EditText>(R.id.AddProjName)
-            val descriptionInput = findViewById<EditText>(R.id.Descriptiontxt)
-            val startTimeInput = findViewById<EditText>(R.id.txtstartTime)
-            val endTimeInput = findViewById<EditText>(R.id.txtEndTime)
+        val timePickerDialog = TimePickerDialog(this, { _, selectedHour, selectedMinute ->
+            val time = String.format("%02d:%02d", selectedHour, selectedMinute)
+            onTimeSelected(time)
+        }, hour, minute, true)
 
-            val clickToAddProj = findViewById<Button>(R.id.clickAddPrj)
-            clickToAddProj.setOnClickListener {
-                val date: String? = dateSelected
-                if (date != null) {
-                    val projectName = projectNameInput.text.toString()
-                    val description = descriptionInput.text.toString()
-                    val startTime = startTimeInput.text.toString()
-                    val endTime = endTimeInput.text.toString()
+        timePickerDialog.show()
+    }
 
-
-                    val bundle = Bundle()
-                    bundle.putString("Date", date)
-                    bundle.putString("Project Name", projectName)
-                    bundle.putString("Description", description)
-                    bundle.putString("Start Time", startTime)
-                    bundle.putString("End Time", endTime)
-
-                    intentHelper.startExistingProjectActivity(this, Dashboard::class.java, bundle)
-                } else {
-                    Toast.makeText(this, "Date is null", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }}}
+    private fun clearFields() {
+        binding.AddProjName.text.clear()
+        binding.Descriptiontxt.text.clear()
+        binding.txtstartTime.text.clear()
+        binding.txtEndTime.text.clear()
+    }
+}
