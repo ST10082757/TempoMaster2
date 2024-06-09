@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -24,14 +23,12 @@ class AddProject : AppCompatActivity() {
     private lateinit var binding: ActivityAddProjectBinding
     private lateinit var databaseReference: DatabaseReference
     private val intentHelper = TheIntentHelper()
-
     private var dateSelected: String = ""
     private var capturedImage: Bitmap? = null
     private lateinit var camLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityAddProjectBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -65,7 +62,7 @@ class AddProject : AppCompatActivity() {
 
 
             if (projectName.isNotEmpty() && description.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty() && category.isNotEmpty() && dateSelected.isNotEmpty()) {
-                val project = Project(projectName, description, dateSelected, startTime, endTime, category)
+                val project = Projects(dateSelected, projectName, description, startTime, endTime, category)
                 databaseReference.push().setValue(project)
                     .addOnSuccessListener {
                         Toast.makeText(this@AddProject, "Project added successfully", Toast.LENGTH_SHORT).show()
@@ -101,7 +98,6 @@ class AddProject : AppCompatActivity() {
             if (callCameraIntent.resolveActivity(packageManager) != null) {
                 camLauncher.launch(callCameraIntent)
             }
-        }
 
         // Bottom navigation bar
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
@@ -232,6 +228,6 @@ class AddProject : AppCompatActivity() {
         val startTime: String,
         val endTime: String,
         val timeLeft: String,
-        var imageUrl: String? = null
+
     )
 }
