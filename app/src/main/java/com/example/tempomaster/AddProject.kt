@@ -69,7 +69,7 @@ class AddProject : AppCompatActivity() {
                 databaseReference.push().setValue(project)
                     .addOnSuccessListener {
                         Toast.makeText(this@AddProject, "Project added successfully", Toast.LENGTH_SHORT).show()
-                        intentHelper.startExistingProjectActivity(this,Dashboard::class.java,bundle)
+                        intentHelper.startExistingProjectActivity(this,ExistingProject::class.java,bundle)
                         clearFields()
                     }
                     .addOnFailureListener {

@@ -140,7 +140,17 @@
                     android:textColorHint="@color/white" />
 
             </androidx.cardview.widget.CardView>
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
+
+            <!--
             <ImageView
             android:id="@+id/pieChart"
             android:layout_width="300dp"
@@ -149,8 +159,10 @@
             app:srcCompat="@drawable/pie"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
+This is a comment -->
 
         </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
