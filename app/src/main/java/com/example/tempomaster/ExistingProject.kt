@@ -80,8 +80,10 @@ class ExistingProject : AppCompatActivity() {
         binding.rtnBackBtn.setOnClickListener {
             iintent.startAddProjectActivity(this, Dashboard::class.java)
         }
+        // Update this part
         binding.btngoalsetting.setOnClickListener {
-            iintent.startAddProjectActivity(this, Goals::class.java)
+            val intent = Intent(this, Goals::class.java)
+            startActivity(intent)
         }
     }
 
