@@ -111,7 +111,7 @@ class AddProject : AppCompatActivity() {
             intentHelper.goBack(this)
         }
 
-//-------------------------------------------JUST INCASE---------------------------------------------------
+//-------------------------------------------JUST INCASE OF EMERGENCY---------------------------------------------------
         /* Camera button
         camLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
