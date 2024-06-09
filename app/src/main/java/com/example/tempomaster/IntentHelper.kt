@@ -41,7 +41,7 @@ the same parameters as the
  original shareIntent() method, but adds the project parameter
  as the data that the app shares
      */
-    fun shareIntent(context: Context, projects: Projects) {
+    /*fun shareIntent(context: Context, projects: Projects) {
         var sendIntent = Intent()
         sendIntent.setAction(Intent.ACTION_SEND)
         var shareProjectDetails = Bundle()
@@ -57,7 +57,7 @@ the same parameters as the
 
         var shareIntent = Intent.createChooser(sendIntent, null,)
         context.startActivity(sendIntent)
-    }
+    }*/
 
 
     companion object {
