@@ -80,32 +80,22 @@ class AddProject : AppCompatActivity() {
             bundle.putString("Category", category)
             
             
-            if (projectName.isNotEmpty() && description.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty() && category.isNotEmpty() && dateSelected.isNotEmpty()) {
-                val project =
-                    Project(projectName, description, dateSelected, startTime, endTime, category)
+             if (projectName.isNotEmpty() && description.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty() && category.isNotEmpty() && dateSelected.isNotEmpty()) {
+                val project = Project(projectName, description, dateSelected, startTime, endTime, category)
                 databaseReference.push().setValue(project)
                     .addOnSuccessListener {
-                        Toast.makeText(
-                            this@AddProject,
-                            "Project added successfully",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        intentHelper.startExistingProjectActivity(
-                            this,
-                            Dashboard::class.java,
-                            bundle
-                        )
+                        Toast.makeText(this@AddProject, "Project added successfully", Toast.LENGTH_SHORT).show()
+                        intentHelper.startExistingProjectActivity(this,ExistingProject::class.java,bundle)
                         clearFields()
                     }
                     .addOnFailureListener {
-                        Toast.makeText(this@AddProject, "Failed to add project", Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(this@AddProject, "Failed to add project", Toast.LENGTH_SHORT).show()
                     }
             } else {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
             }
         }
-        
+
         // Back button
         binding.backclick.setOnClickListener {
             intentHelper.goBack(this)
