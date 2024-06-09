@@ -46,7 +46,7 @@ class Goals : AppCompatActivity() {
         val user = auth.currentUser
 
         if (user != null) {
-            database = FirebaseDatabase.getInstance("https://tempo-master-default-rtdb.firebaseio.com/").getReference("goals").child(user.uid)
+            database = FirebaseDatabase.getInstance().getReference("goals").child(user.uid)
         }
 
         saveButton.setOnClickListener {
