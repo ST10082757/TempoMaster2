@@ -76,9 +76,16 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
             val startTime = it.getString("Start Time")
             val endTime = it.getString("End Time")
 
-            binding.txtProjectName.text = "Project name: $projectName"
-            binding.txtProjectStartTime.text = "Start Time: $startTime"
-            binding.txtProjectEndTime.text = "End Time: $endTime"
+            // Check if the extras are not null before setting them to the TextViews
+            if (projectName != null) {
+                binding.txtProjectName.text = "Project name: $projectName"
+            }
+            if (startTime != null) {
+                binding.txtProjectStartTime.text = "Start Time: $startTime"
+            }
+            if (endTime != null) {
+                binding.txtProjectEndTime.text = "End Time: $endTime"
+            }
         }
     }
 
