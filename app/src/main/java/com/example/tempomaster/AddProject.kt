@@ -131,7 +131,7 @@ class AddProject : AppCompatActivity() {
         //---------------------------------------------------------------------------------------------
         
         binding.cameraBtn.setOnClickListener {
-            // Check if camera permission is granted
+            // Check if camera permission is given/clicked
             if (ContextCompat.checkSelfPermission(
                     this,
                     Manifest.permission.CAMERA
