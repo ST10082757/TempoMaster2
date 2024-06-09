@@ -53,11 +53,20 @@ class AddProject : AppCompatActivity() {
             val category = binding.spinnerCategory.selectedItem.toString()
             val userId = FirebaseAuth.getInstance().currentUser?.uid
 
+            val bundle = Bundle()
+            bundle.putString("Project name",projectName)
+            bundle.putString("Description",description)
+            bundle.putString("Start time",startTime)
+            bundle.putString("End time",endTime)
+            bundle.putString("Category",category)
+
+
             if (projectName.isNotEmpty() && description.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty() && category.isNotEmpty() && dateSelected.isNotEmpty()) {
                 val project = Projects(dateSelected, projectName, description, startTime, endTime, category)
                 databaseReference.push().setValue(project)
                     .addOnSuccessListener {
                         Toast.makeText(this@AddProject, "Project added successfully", Toast.LENGTH_SHORT).show()
+                        intentHelper.startExistingProjectActivity(this,Dashboard::class.java,bundle)
                         clearFields()
                     }
                     .addOnFailureListener {
@@ -74,13 +83,6 @@ class AddProject : AppCompatActivity() {
         }
 
         // Camera button
-        binding.cameraBtn.setOnClickListener {
-            val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            if (callCameraIntent.resolveActivity(packageManager) != null) {
-                camLauncher.launch(callCameraIntent)
-            }
-        }
-
         camLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
@@ -90,6 +92,12 @@ class AddProject : AppCompatActivity() {
                 Toast.makeText(this, "Camera capture canceled", Toast.LENGTH_SHORT).show()
             }
         }
+
+        binding.cameraBtn.setOnClickListener {
+            val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            if (callCameraIntent.resolveActivity(packageManager) != null) {
+                camLauncher.launch(callCameraIntent)
+            }
 
         // Bottom navigation bar
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
@@ -185,7 +193,7 @@ class AddProject : AppCompatActivity() {
     private fun navigateToDashboard() {
         val intent = Intent(this, Dashboard::class.java)
         startActivity(intent)
-        finish() // Close the current activity
+        finish()
     }
 
     private fun validateInputs(
@@ -220,6 +228,6 @@ class AddProject : AppCompatActivity() {
         val startTime: String,
         val endTime: String,
         val timeLeft: String,
-        var imageUrl: String? = null // Initialize the imageUrl as null
+
     )
 }

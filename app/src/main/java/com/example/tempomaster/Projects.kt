@@ -1,26 +1,20 @@
 package com.example.tempomaster
 
-
- class Projects {
-
 import android.graphics.Bitmap
 
-class Projects {
-    //private var _date: String = ""
-
-    /*
-    *this. helps to access members (methods or variables) of the current
-    * object from within an instance method or a constructor.
-    */
-
+// Class representing a project
+ class Projects {
     lateinit var date: String
-    lateinit var Pname : String
+    lateinit var Pname: String
     lateinit var startTime: String
     lateinit var endTime: String
     lateinit var description: String
     lateinit var category: String
-     val userId: String = ""
+    val userId: String = ""
+    lateinit var image: Bitmap
 }
+
+// Data class representing a project with default values
 data class Project(
     val projectName: String = "",
     val description: String = "",
@@ -29,28 +23,3 @@ data class Project(
     val endTime: String = "",
     val category: String = ""
 )
-    lateinit var image: Bitmap
-    //lateinit var timeLeft: String
-
-    // Primary constructor
-   // constructor()
-//---------------------------------------------------------------------
-
-    // Secondary constructor with all parameters
-   // constructor(date: String,Pname: String, startTime: String, endTime: String, description: String, category: String) : this() {
-       // this.date = date
-      //  this.Pname = Pname
-      //  this.startTime = startTime
-      //  this.endTime = endTime
-      //  this.description = description
-      //  this.category = category
-    //}
-/*This method is called when a date is selected in the DatePickerDialog
-
-fun setDate(date: String)
-{
-    //this.date= date
-    _date = date
-}*/
-
-}
