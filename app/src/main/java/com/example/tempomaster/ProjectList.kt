@@ -1,6 +1,7 @@
 package com.example.tempomaster
 
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
@@ -9,6 +10,7 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -49,6 +51,24 @@ class ProjectList : AppCompatActivity() {
 
         retrieveGoalData()
         retrieveProjectData()
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.dashboardID -> {
+                    startActivity(Intent(this, Dashboard::class.java))
+                    true
+                }
+                R.id.settingsID -> {
+                    startActivity(Intent(this, Settings::class.java))
+                    true
+                }
+                R.id.projectID -> {
+                    startActivity(Intent(this, ProjectList::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun retrieveGoalData() {
