@@ -10,13 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tempomaster.databinding.ActivityExistingProjectBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ExistingProject : AppCompatActivity() {
     private lateinit var binding: ActivityExistingProjectBinding
     private val intentHelper = TheIntentHelper()
-    private lateinit var projectList: MutableList<Projects>
     private lateinit var recyclerView: RecyclerView
     private lateinit var database: DatabaseReference
     private lateinit var myAdapter: MyAdapter
@@ -36,23 +36,26 @@ class ExistingProject : AppCompatActivity() {
         myAdapter = MyAdapter(this, list)
         recyclerView.adapter = myAdapter
 
-        // Load all projects without filtering by userId
-        database.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                list.clear()
-                for (projectSnapshot in dataSnapshot.children) {
-                    val project = projectSnapshot.getValue(Projects::class.java)
-                    if (project != null) {
-                        list.add(project)
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId != null) {
+            database.orderByChild("userId").equalTo(userId)
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        list.clear()
+                        for (projectSnapshot in dataSnapshot.children) {
+                            val project = projectSnapshot.getValue(Projects::class.java)
+                            if (project != null) {
+                                list.add(project)
+                            }
+                        }
+                        myAdapter.notifyDataSetChanged()
                     }
-                }
-                myAdapter.notifyDataSetChanged()
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                Toast.makeText(this@ExistingProject, "Failed to load projects", Toast.LENGTH_SHORT).show()
-            }
-        })
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        Toast.makeText(this@ExistingProject, "Failed to load projects", Toast.LENGTH_SHORT).show()
+                    }
+                })
+        }
 
         val image: ImageView = binding.projectPngView
         val bitmap = intent.getParcelableExtra<Bitmap>("ProjectImage")
