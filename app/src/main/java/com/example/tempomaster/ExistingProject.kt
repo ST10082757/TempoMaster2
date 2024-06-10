@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -20,13 +19,12 @@ import com.google.firebase.database.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ExistingProject : AppCompatActivity() {
-    private val iintent = TheIntentHelper()
+    private lateinit var binding: ActivityExistingProjectBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var projectAdapter: ProjectAdapter
     private lateinit var projectList: MutableList<Projects>
     private lateinit var databaseReference: DatabaseReference
-
-    private lateinit var binding: ActivityExistingProjectBinding
+    private val intentHelper = TheIntentHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +33,7 @@ class ExistingProject : AppCompatActivity() {
         setContentView(binding.root)
 
         // Initialize Firebase Database reference
-        databaseReference = FirebaseDatabase.getInstance().getReference("Projects")
+        databaseReference = FirebaseDatabase.getInstance().getReference("projects")
 
         // Initialize the project list and adapter
         projectList = mutableListOf()
@@ -81,12 +79,16 @@ class ExistingProject : AppCompatActivity() {
         }
 
         binding.rtnBackBtn.setOnClickListener {
-            iintent.startAddProjectActivity(this, Dashboard::class.java)
+            intentHelper.startAddProjectActivity(this, Dashboard::class.java)
         }
         // Update this part
         binding.btngoalsetting.setOnClickListener {
-            val intent = Intent(this, Goals::class.java)
+
+            intentHelper.startAddProjectActivity(this, Goals::class.java)
+
+          val intent = Intent(this, Goals::class.java)
             startActivity(intent)
+
         }
     }
 
@@ -158,6 +160,4 @@ class ExistingProject : AppCompatActivity() {
     val intent = Intent(context, activityToOpen)
     context.startActivity(intent)
 }
-
-
 
