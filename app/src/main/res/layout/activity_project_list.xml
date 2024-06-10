@@ -35,13 +35,30 @@
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/barChart"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="400dp"
                 android:layout_marginTop="30dp"/>
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <Button
+                android:id="@+id/selectTimePeriodButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Select Time Period"
+                android:textColor="@color/white"
+                android:background="@color/orange" />
+
+            <Button
+                android:id="@+id/undoButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Undo"
+                android:textColor="@color/black"
+                android:background="@color/whiteGrey" />
             <TextView
                 android:id="@+id/progressLabel"
                 android:layout_width="match_parent"
@@ -54,7 +71,7 @@
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/progressBarChart"
                 android:layout_width="match_parent"
-                android:layout_height="300dp" />
+                android:layout_height="400dp" />
         </LinearLayout>
     </ScrollView>
 
