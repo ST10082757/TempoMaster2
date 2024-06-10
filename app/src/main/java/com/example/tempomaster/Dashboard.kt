@@ -22,29 +22,28 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
-
-        binding = ActivityDashboardBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        //instantiating intent class
-        handleIntentData()
-
         workClickCount = intent.getIntExtra("workClickCount", 0)
         schoolClickCount = intent.getIntExtra("schoolClickCount", 0)
         generalClickCount = intent.getIntExtra("generalClickCount", 0)
 
-        //passing the click count values
+        binding = ActivityDashboardBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         binding.btnwork.text = "Work ($workClickCount)"
         binding.btnschool.text = "School ($schoolClickCount)"
         binding.btngeneral.text = "General ($generalClickCount)"
+        binding.btnworklogo.text = "Work ($workClickCount)"
+        binding.btngeneralLogo.text = "General ($generalClickCount)"
+        binding.btnschoolLogo.text = "School ($schoolClickCount)"
 
-        // setting click listeners for buttons
         binding.btnwork.setOnClickListener(this)
         binding.btnschool.setOnClickListener(this)
         binding.btngeneral.setOnClickListener(this)
-        binding.btnschoolLogo.setOnClickListener(this)
         binding.btnworklogo.setOnClickListener(this)
+        binding.btnschoolLogo.setOnClickListener(this)
         binding.btngeneralLogo.setOnClickListener(this)
+
+        handleIntentData()
 
         //game button that redirects to gamification
         binding.gameBtn.setOnClickListener {
@@ -84,44 +83,52 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
     //button that redirects user
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.btnwork ->
-                {
+            R.id.btnwork -> {
+                workClickCount++
                 binding.btnwork.text = "Work ($workClickCount)"
                 val intent = Intent(this, ExistingProject::class.java)
                 startActivity(intent)
             }
-            R.id.btnschool ->
-                {
+            R.id.btnschool -> {
+                schoolClickCount++
                 binding.btnschool.text = "School ($schoolClickCount)"
                 val intent = Intent(this, ExistingProject::class.java)
                 startActivity(intent)
             }
-            R.id.btngeneral ->
-                {
+            R.id.btngeneral -> {
+                generalClickCount++
                 binding.btngeneral.text = "General ($generalClickCount)"
                 val intent = Intent(this, ExistingProject::class.java)
                 startActivity(intent)
             }
-
-            R.id.btnschoolLogo ->
-                {
-                Toast.makeText(this@Dashboard, "You have selected to add a new School project", Toast.LENGTH_SHORT).show()
+            R.id.btnschoolLogo, R.id.btnworklogo, R.id.btngeneralLogo -> {
                 val intent = Intent(this, AddProject::class.java)
                 startActivity(intent)
             }
-            R.id.btnworklogo ->
-                {
-                Toast.makeText(this@Dashboard, "You have selected to add a new Work project", Toast.LENGTH_SHORT).show()
+            R.id.btnschoolLogo -> {
+                schoolClickCount++
+                val project = ProjectCategory("School")
+                Toast.makeText(this@Dashboard, "You have added a new School project", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, AddProject::class.java)
                 startActivity(intent)
             }
-            R.id.btngeneralLogo ->
-                {
-                Toast.makeText(this@Dashboard, "You have selected to add a new General project", Toast.LENGTH_SHORT).show()
+            R.id.btnworklogo -> {
+                workClickCount++
+                val project = ProjectCategory("Work")
+                Toast.makeText(this@Dashboard, "You have added a new Work project", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, AddProject::class.java)
+                startActivity(intent)
+            }
+            R.id.btngeneralLogo -> {
+                generalClickCount++
+                val project = ProjectCategory("General")
+                Toast.makeText(this@Dashboard, "You have added a new General project", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, Dashboard::class.java)
+                intent.putExtra("workClickCount", workClickCount)
+                intent.putExtra("schoolClickCount", schoolClickCount)
+                intent.putExtra("generalClickCount", generalClickCount)
                 startActivity(intent)
             }
         }
-
     }
 }
