@@ -63,7 +63,6 @@ class AddProject : AppCompatActivity() {
             bundle.putString("End time",endTime)
             bundle.putString("Category",category)
 
-
             if (projectName.isNotEmpty() && description.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty() && category.isNotEmpty() && dateSelected.isNotEmpty()) {
                 val project = Project(projectName, description, dateSelected, startTime, endTime, category)
                 databaseReference.push().setValue(project)

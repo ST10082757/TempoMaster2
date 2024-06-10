@@ -21,5 +21,7 @@ data class Project(
     val date: String = "",
     val startTime: String = "",
     val endTime: String = "",
-    val category: String = ""
+    val category: String = "",
+    val userId: String = "",
+    val imageUrl: String = ""
 )
