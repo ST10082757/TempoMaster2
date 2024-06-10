@@ -13,7 +13,8 @@ Content in the folder:
   4. this readme document(txt file and github readme)
   5. The android studio source code
 
-Github repo link : 
+Github repo link : https://github.com/ST10082757/TempoMaster2/tree/master
+
 
 Welcome to the Time Tracker Application! This application is designed to help you efficiently manage and monitor your time by tracking various tasks and projects. 
 This README provides an overview of the main features, content and functionalities of the application.
@@ -33,27 +34,29 @@ This README provides an overview of the main features, content and functionaliti
 3. Enter your **email** or **username** and **password**.
 4. Click the **Login** button to access your account.
 
-## Navigating the App
+## Navigating the App and where to find each feature
 
 ### 3. Welcome Page
 1. After logging in, you will be greeted by the **Welcome Page**.
 2. Select a category that best fits your initial tasks to streamline your time tracking setup.
 
-### 4. Dashboard
+### 4. Add Project
+1. Navigate to the **Add Project** page.
+2. Enter the **Project Name**.
+3. Provide a detailed **Project Description**.
+4. Allocate time by choosing dates in the **Weekly Calendar View**.
+5. Click the **Add Project** button to save the project.
+   
+### 5. Dashboard
 1. The **Dashboard** is your central hub for managing and monitoring your activities.
-2. From the Dashboard, you can:
+2. You have an option to do the following :
    - **Continue Project**: Resume work on an existing project.
    - **Add New**: Start tracking time for a new task.
    - **Recent Project**: Quickly view recent projects and their time usage.
 
 ## Project Management
 
-### 5. Add Project
-1. Navigate to the **Add Project** page.
-2. Enter the **Project Name**.
-3. Provide a detailed **Project Description**.
-4. Allocate time by choosing dates in the **Weekly Calendar View**.
-5. Click the **Add Project** button to save the project.
+
 
 ### 6. Existing Project
 1. Access your ongoing projects from the **Existing Project** section.
@@ -115,13 +118,9 @@ The Login page is for authenticating users and granting them access to their acc
 ### Welcome Page
 The Welcome Page provides a personalized onboarding experience. Users can select a category upfront to expedite getting started with time tracking.
 
-### Dashboard
-The Dashboard serves as a centralized hub for users to manage and monitor their activities.
-- **Continue Project**: Allows users to continue from where they left off without navigating through multiple screens.
-- **Add New**: Initiates time tracking for new tasks.
-- **Recent Project**: Provides insights into recent time usage immediately upon login.
 
-### Project Management
+
+### Project Management features
 - **Add Project**: Facilitates the creation of new projects. Users can name their task, provide a description, and allocate time to the project.
 - **Existing Project**: Provides access to ongoing projects for efficient management. Users can view detailed information, delete projects, and quickly locate specific projects.
 
@@ -134,6 +133,12 @@ Provides an overview of ongoing projects, including timelines, descriptions, and
 ### Settings
 Allows users to customize their time tracking experience.
 - **Focus Mode**: Minimizes distractions to help users stay productive.
+
+### Dashboard
+The Dashboard serves as a centralized hub for users to manage and monitor their activities.
+- **Continue Project**: Allows users to continue from where they left off without navigating through multiple screens.
+- **Add New**: Initiates time tracking for new tasks.
+- **Recent Project**: Provides insights into recent time usage immediately upon login.
 
 ## User Authentication
 
