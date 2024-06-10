@@ -60,5 +60,10 @@
         professionals, and anyone seeking to improve their productivity.
 </string>
 
+    <string-array name="category_array">
+        <item>School</item>
+        <item>Work</item>
+        <item>General</item>
+    </string-array>
 
 </resources>

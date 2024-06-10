@@ -1,113 +1,163 @@
 package com.example.tempomaster
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
-import android.widget.ArrayAdapter
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ListView
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import android.graphics.Bitmap
-import android.widget.ImageView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tempomaster.databinding.ActivityExistingProjectBinding
-
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ExistingProject : AppCompatActivity() {
-    private var iintent = TheIntentHelper()
+    private val iintent = TheIntentHelper()
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var projectAdapter: ProjectAdapter
+    private lateinit var projectList: MutableList<Projects>
+    private lateinit var databaseReference: DatabaseReference
 
     private lateinit var binding: ActivityExistingProjectBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_existing_project)
-
-        binding = ActivityExistingProjectBinding.inflate(layoutInflater) // Correct binding
+        binding = ActivityExistingProjectBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            //val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-           // v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-           // insets
-            // the list of projects
-            val bundle = intent.extras
-            val date = bundle?.getString("Date")
-            val projectName = bundle?.getString("Project Name")
-            val description = bundle?.getString("Description")
-            val startTime = bundle?.getString("Start Time")
-            val endTime = bundle?.getString("End Time")
+        // Initialize Firebase Database reference
+        databaseReference = FirebaseDatabase.getInstance().getReference("Projects")
 
-            //displaying the projects in a ListView
-            val listOfProjects : ListView = findViewById(R.id.ListOfProjects)
-                val projectList = arrayListOf("$projectName, $description, $date, $startTime, $endTime")
-    /*
-    this= referring to the current Activity
-    android.R.layout.simple_list_item_1= This is a built-in layout provided by
-    Android Studio that represents a single item in the list.
-    projectList= This is the data(project details) that the adapter will use to fill the ListView
-     */
-                val adapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,projectList )
-                listOfProjects.adapter = adapter
+        // Initialize the project list and adapter
+        projectList = mutableListOf()
+        projectAdapter = ProjectAdapter(projectList)
 
-        val deleteBtn = findViewById<Button>(R.id.DeleteBtn)
-        deleteBtn.setOnClickListener{
-            //based on what is chosen
-            val selectedItemPosition = listOfProjects.checkedItemPosition
-            if(selectedItemPosition != ListView.INVALID_POSITION){
-                //delete the project chosen
-                projectList.removeAt(selectedItemPosition)
+        // Set up RecyclerView
+        recyclerView = binding.recyclerView
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = projectAdapter
 
-                //toast message alerting the user
-                adapter.notifyDataSetChanged()} else{
-                Toast.makeText(this,"No items selected", Toast.LENGTH_SHORT).show()
-            }
+        // Fetch data from Firebase
+        fetchProjectsFromFirebase()
 
+        // Handle the camera intent
+        val image: ImageView = binding.projectPngView
+        val bitmap = intent.getParcelableExtra<Bitmap>("ProjectImage")
+        if (bitmap != null) {
+            image.setImageBitmap(bitmap)
+        } else {
+            image.setImageResource(R.drawable.ic_launcher_foreground) // Placeholder image
         }
-        //----------------------------------NAVIGATION BAR-----------------------------------------//
-        // Check initialization of the bottom navigation
+
+        // Bottom navigation handling
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.dashboardID -> {
-                    val intent = Intent(this, Dashboard::class.java)
-                    startActivity(intent)
+                    startActivity(Intent(this, Dashboard::class.java))
+                    true
                 }
+
                 R.id.settingsID -> {
-                    val intent = Intent(this, Settings::class.java)
-                    startActivity(intent)
+                    startActivity(Intent(this, Settings::class.java))
+                    true
                 }
+
                 R.id.projectID -> {
-                    val intent = Intent(this, ExistingProject::class.java)
-                    startActivity(intent)
+                    startActivity(Intent(this, ProjectList::class.java))
+                    true
                 }
-                R.id.projectID -> {
-                    val intent = Intent(this, ExistingProject::class.java)
-                    startActivity(intent)
-                }
-                else -> false // Unhandled case
+
+                else -> false
             }
-            true // Indicate successful handling
         }
 
-        val  button = findViewById<Button>(R.id.rtnBackBtn)
-        button.setOnClickListener{
-            iintent.startAddProjectActivity(this,Dashboard::class.java)
+        binding.rtnBackBtn.setOnClickListener {
+            iintent.startAddProjectActivity(this, Dashboard::class.java)
         }
-        val  setGoal = findViewById<Button>(R.id.btngoalsetting)
-        setGoal.setOnClickListener{
-            iintent.startAddProjectActivity(this,Goals::class.java)
+        // Update this part
+        binding.btngoalsetting.setOnClickListener {
+            val intent = Intent(this, Goals::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun fetchProjectsFromFirebase() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId != null) {
+            databaseReference.orderByChild("userId").equalTo(userId)
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        projectList.clear()
+                        for (projectSnapshot in dataSnapshot.children) {
+                            val project = projectSnapshot.getValue(Projects::class.java)
+                            project?.let {
+                                // Assign userId to each project
+                                it.userId = userId
+                                // Add project to the list
+                                projectList.add(it)
+                            }
+                        }
+                        projectAdapter.notifyDataSetChanged()
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        Toast.makeText(
+                            this@ExistingProject,
+                            "Failed to load projects",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                })
+        }
+    }
+
+
+    class ProjectAdapter(private val projectList: List<Projects>) :
+        RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder>() {
+
+        inner class ProjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val projectName: TextView = itemView.findViewById(R.id.projectName)
+            val projectDescription: TextView = itemView.findViewById(R.id.projectDescription)
+            val startDate: TextView = itemView.findViewById(R.id.startDate)
+            val endDate: TextView = itemView.findViewById(R.id.endDate)
+            val category: TextView = itemView.findViewById(R.id.category)
         }
 
-        //for the camera intent
-        val image : ImageView = findViewById(R.id.projectPngView)
-        val bitmap = intent.getParcelableExtra<Bitmap>("ProjectImage")
-        image.setImageBitmap(bitmap)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectViewHolder {
+            val view =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_project, parent, false)
+            return ProjectViewHolder(view)
+        }
 
+        override fun onBindViewHolder(holder: ProjectViewHolder, position: Int) {
+            val project = projectList[position]
+            holder.projectName.text = project.Pname
+            holder.projectDescription.text = project.description
+            holder.startDate.text = project.startTime
+            holder.endDate.text = project.endTime
+            holder.category.text = project.category
+        }
+
+        override fun getItemCount(): Int {
+            return projectList.size
+        }
     }
 }
 
-private fun TheIntentHelper.startAddProjectActivity(context: ExistingProject, activityToOpen: Class<Goals>) {
 
+    private fun TheIntentHelper.startAddProjectActivity(context: ExistingProject, activityToOpen: Class<*>) {
+    val intent = Intent(context, activityToOpen)
+    context.startActivity(intent)
 }
+
+
+
