@@ -63,14 +63,17 @@ class ExistingProject : AppCompatActivity() {
                     startActivity(Intent(this, Dashboard::class.java))
                     true
                 }
+
                 R.id.settingsID -> {
                     startActivity(Intent(this, Settings::class.java))
                     true
                 }
+
                 R.id.projectID -> {
-                    startActivity(Intent(this, ExistingProject::class.java))
+                    startActivity(Intent(this, ProjectList::class.java))
                     true
                 }
+
                 else -> false
             }
         }
@@ -78,32 +81,47 @@ class ExistingProject : AppCompatActivity() {
         binding.rtnBackBtn.setOnClickListener {
             intentHelper.startAddProjectActivity(this, Dashboard::class.java)
         }
+        // Update this part
         binding.btngoalsetting.setOnClickListener {
+
             intentHelper.startAddProjectActivity(this, Goals::class.java)
+
+          val intent = Intent(this, Goals::class.java)
+            startActivity(intent)
+
         }
     }
 
     private fun fetchProjectsFromFirebase() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         if (userId != null) {
-            databaseReference.orderByChild("userId").equalTo(userId).addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    projectList.clear()
-                    for (projectSnapshot in dataSnapshot.children) {
-                        val project = projectSnapshot.getValue(Projects::class.java)
-                        if (project != null) {
-                            projectList.add(project)
+            databaseReference.orderByChild("userId").equalTo(userId)
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        projectList.clear()
+                        for (projectSnapshot in dataSnapshot.children) {
+                            val project = projectSnapshot.getValue(Projects::class.java)
+                            project?.let {
+                                // Assign userId to each project
+                                it.userId = userId
+                                // Add project to the list
+                                projectList.add(it)
+                            }
                         }
+                        projectAdapter.notifyDataSetChanged()
                     }
-                    projectAdapter.notifyDataSetChanged()
-                }
 
-                override fun onCancelled(databaseError: DatabaseError) {
-                    Toast.makeText(this@ExistingProject, "Failed to load projects", Toast.LENGTH_SHORT).show()
-                }
-            })
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        Toast.makeText(
+                            this@ExistingProject,
+                            "Failed to load projects",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                })
         }
     }
+
 
     class ProjectAdapter(private val projectList: List<Projects>) :
         RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder>() {
@@ -117,7 +135,8 @@ class ExistingProject : AppCompatActivity() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_project, parent, false)
+            val view =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_project, parent, false)
             return ProjectViewHolder(view)
         }
 
@@ -136,7 +155,9 @@ class ExistingProject : AppCompatActivity() {
     }
 }
 
-private fun TheIntentHelper.startAddProjectActivity(context: ExistingProject, activityToOpen: Class<*>) {
+
+    private fun TheIntentHelper.startAddProjectActivity(context: ExistingProject, activityToOpen: Class<*>) {
     val intent = Intent(context, activityToOpen)
     context.startActivity(intent)
 }
+

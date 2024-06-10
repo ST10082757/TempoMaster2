@@ -10,7 +10,7 @@ import android.graphics.Bitmap
     lateinit var endTime: String
     lateinit var description: String
     lateinit var category: String
-    val userId: String = ""
+    lateinit var userId: String // Update userId to be mutable
     lateinit var image: Bitmap
 }
 
