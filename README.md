@@ -50,7 +50,7 @@ This application is designed to help you efficiently manage and monitor your tim
 
 ### 4. Welcome Page
 
-1. After logging in, you will be greeted by the **Welcome Page**.
+1. After logging in, you will be greeted by the **Welcome**.
 2. Select a category that best fits your initial tasks to streamline your time tracking setup.
 3. There are 3 categories: work, school, and general.
 4. Choose a category, and a toast message confirming the category you clicked appears.
@@ -58,7 +58,7 @@ This application is designed to help you efficiently manage and monitor your tim
 
 ### 5. Add Project
 
-1. Navigate to the **Add Project** page.
+1. Navigate to the **Add Project** screen.
 2. Pick a date from the calendar view.
 3. Enter the **Project Name**.
 4. Provide a detailed **Project Description**.
@@ -227,4 +227,4 @@ The Time Tracker Application is designed to enhance productivity by providing co
 Timesheet entries are displayed for selectable periods in chronological order, including all details and attached photos.
 
 ## Conclusion
-The Time Tracker Application is designed to enhance productivity by providing comprehensive tools for time management and project tracking. For any questions or support, please refer to our help section or contact customer service.
+The Time Tracker Application is designed to enhance productivity by providing comprehensive tools for time management and project tracking. 
