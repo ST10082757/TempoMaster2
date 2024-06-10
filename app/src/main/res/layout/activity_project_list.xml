@@ -8,6 +8,7 @@
     android:background="@color/Dark_Grey"
     tools:context=".ProjectList">
 
+
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
