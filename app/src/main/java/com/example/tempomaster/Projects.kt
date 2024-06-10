@@ -1,32 +1,21 @@
 package com.example.tempomaster
 
-import android.graphics.Bitmap
 
-// Class representing a project
 class Projects {
-    lateinit var date: String
-    lateinit var Pname: String
-    lateinit var startTime: String
-    lateinit var endTime: String
-    lateinit var description: String
-    lateinit var category: String
-    lateinit var userId: String
-    lateinit var image: Bitmap
-
-    // If you need custom behavior for getters and setters, you can use property custom accessors
-    // For example:
-    // var date: String
-    //     get() = field
-    //     set(value) {
-    //         field = value
-    //     }
+    val date: String? = null
+    val projectName: String? = null
+    val description: String? = null
+    val startTime: String? = null
+    val endTime: String? = null
+    val category: String? = null
+    val imageUrl: String? = null
 }
 
 // Data class representing a project with default values
 data class Project(
+    val date: String = "",
     val projectName: String = "",
     val description: String = "",
-    val date: String = "",
     val startTime: String = "",
     val endTime: String = "",
     val category: String = "",

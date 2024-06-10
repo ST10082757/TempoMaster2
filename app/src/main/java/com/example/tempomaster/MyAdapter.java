@@ -29,12 +29,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Projects project = list.get(position);
-        holder.projectName.setText(project.Pname);
-        holder.description.setText(project.description);
-        holder.date.setText(project.date);
-        holder.startTime.setText(project.startTime);
-        holder.endTime.setText(project.endTime);
-        holder.category.setText(project.category);
+        holder.projectName.setText(project.getProjectName());
+        holder.description.setText(project.getDescription());
+        holder.date.setText(project.getDate());
+        holder.startTime.setText(project.getStartTime());
+        holder.endTime.setText(project.getEndTime());
+        holder.category.setText(project.getCategory());
     }
 
     @Override
