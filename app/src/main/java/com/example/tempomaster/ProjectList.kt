@@ -12,28 +12,29 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.Calendar
 
-
 class ProjectList : AppCompatActivity() {
 
-    private lateinit var database: DatabaseReference
+    private lateinit var goalsDatabase: DatabaseReference
+    private lateinit var projectsDatabase: DatabaseReference
     private lateinit var barChart: BarChart
     private lateinit var progressBarChart: BarChart
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project_list)
 
-        database = Firebase.database.reference.child("goals")
+        goalsDatabase = Firebase.database.reference.child("goals")
+        projectsDatabase = Firebase.database.reference.child("projects")
+
         barChart = findViewById(R.id.barChart)
         progressBarChart = findViewById(R.id.progressBarChart)
 
-        retrieveData()
-        updateProgressBarChart()
+        retrieveGoalData()
+        retrieveProjectData()
     }
 
-    private fun retrieveData() {
-        database.addValueEventListener(object : ValueEventListener {
+    private fun retrieveGoalData() {
+        goalsDatabase.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val minGoalEntries = ArrayList<BarEntry>()
                 val maxGoalEntries = ArrayList<BarEntry>()
@@ -65,12 +66,10 @@ class ProjectList : AppCompatActivity() {
         val minGoalDataSet = BarDataSet(minGoalEntries, "Min Goals").apply {
             color = Color.BLUE
             valueTextSize = 16f // Increase the text size on the bars
-
         }
         val maxGoalDataSet = BarDataSet(maxGoalEntries, "Max Goals").apply {
             color = Color.RED
             valueTextSize = 16f // Increase the text size on the bars
-
         }
         val data = BarData(minGoalDataSet, maxGoalDataSet).apply {
             barWidth = 0.3f // Set the width of the bars
@@ -83,47 +82,41 @@ class ProjectList : AppCompatActivity() {
         barChart.invalidate()
     }
 
-    private fun updateProgressBarChart() {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.DAY_OF_MONTH, 1) // Set the date to the first day of the current month
-        val firstDayOfMonth = calendar.timeInMillis
-
-        database.orderByChild("timestamp").startAt(firstDayOfMonth.toDouble())
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val progressEntries = ArrayList<BarEntry>()
-                    var index = 0f
-                    for (snapshot in dataSnapshot.children) {
-                        val goal = snapshot.getValue(String::class.java)
-                        val goalValues = goal?.split(" - ")?.map { it.toFloatOrNull() }
-                        if (goalValues != null && goalValues.size == 2 && goalValues[0] != null && goalValues[1] != null) {
-                            val yValue =
-                                if (goalValues[0]!! >= goalValues[1]!! && goalValues[0]!! <= goalValues[1]!!) 1f else 0f
-                            progressEntries.add(BarEntry(index, yValue))
-                            index++
-                        }
+    private fun retrieveProjectData() {
+        projectsDatabase.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val progressEntries = ArrayList<BarEntry>()
+                var index = 0f
+                for (snapshot in dataSnapshot.children) {
+                    val startTime = snapshot.child("startTime").getValue(String::class.java)?.split(":")?.map { it.toIntOrNull() }
+                    val endTime = snapshot.child("endTime").getValue(String::class.java)?.split(":")?.map { it.toIntOrNull() }
+                    if (startTime != null && startTime.size == 2 && endTime != null && endTime.size == 2) {
+                        val startHour = startTime[0]!!
+                        val endHour = endTime[0]!!
+                        val hoursWorked = if (endHour >= startHour) endHour - startHour else 24 - startHour + endHour
+                        progressEntries.add(BarEntry(index, hoursWorked.toFloat()))
+                        index++
                     }
-                    val dataSet = BarDataSet(progressEntries, "Goal Progress").apply {
-                        color = Color.GREEN
-                        valueTextSize = 16f // Increase the text size on the bars
-                    }
-                    val data = BarData(dataSet).apply {
-                        barWidth = 0.3f // Set the width of the bars
-                    }
-                    progressBarChart.data = data
-                    progressBarChart.xAxis.textSize = 16f // Set the size of the labels
-                    progressBarChart.invalidate()
                 }
+                updateProgressBarChart(progressEntries)
+            }
 
-                override fun onCancelled(databaseError: DatabaseError) {
-                    // Handle error
-                }
-            })
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle error
+            }
+        })
+    }
+
+    private fun updateProgressBarChart(progressEntries: ArrayList<BarEntry>) {
+        val dataSet = BarDataSet(progressEntries, "Hours Worked").apply {
+            color = Color.GREEN
+            valueTextSize = 16f // Increase the text size on the bars
+        }
+        val data = BarData(dataSet).apply {
+            barWidth = 0.3f // Set the width of the bars
+        }
+        progressBarChart.data = data
+        progressBarChart.xAxis.textSize = 16f // Set the size of the labels
+        progressBarChart.invalidate()
     }
 }
-    data class Goal(
-        val timestamp: Long,
-        val hours: Float,
-        val minGoal: Float,
-        val maxGoal: Float
-    )
