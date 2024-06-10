@@ -185,7 +185,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="300dp"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
             app:cardBackgroundColor="@color/black"
@@ -236,6 +236,15 @@
             android:layout_marginTop="-10dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/img" />
+
+        <Button
+            android:id="@+id/projectBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:text="@string/projectList"/>
 
         <ScrollView
             android:layout_width="match_parent"

@@ -18,6 +18,12 @@ class TheIntentHelper {
         context.startActivity(intent)
     }
 
+    fun startDashboardActivity(context: Context, activityToOpen: Class<*>, bundle: Bundle) {
+        val intent = Intent(context, activityToOpen)
+        intent.putExtras(bundle)
+        context.startActivity(intent)
+    }
+
     fun startExistingProjectActivity(context: Context, activityToOpen: Class<*>) {
         val intent = Intent(context, activityToOpen)
         context.startActivity(intent)

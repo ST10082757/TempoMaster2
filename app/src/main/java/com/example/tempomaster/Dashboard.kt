@@ -3,7 +3,6 @@ package com.example.tempomaster
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tempomaster.com.example.tempomaster.ProjectCategory
@@ -11,30 +10,31 @@ import com.example.tempomaster.databinding.ActivityDashboardBinding
 
 class Dashboard : AppCompatActivity(), View.OnClickListener {
 
-    //variables to store and hold click count
-    var workClickCount = 0
-    var schoolClickCount = 0
-    var generalClickCount = 0
+    // Variables to store and hold click count
+    private var workClickCount = 0
+    private var schoolClickCount = 0
+    private var generalClickCount = 0
 
     private lateinit var binding: ActivityDashboardBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dashboard)
+        binding = ActivityDashboardBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        //instantiating intent class
+        // Handling intent data
         handleIntentData()
 
         workClickCount = intent.getIntExtra("workClickCount", 0)
         schoolClickCount = intent.getIntExtra("schoolClickCount", 0)
         generalClickCount = intent.getIntExtra("generalClickCount", 0)
 
-        //passing the click count values
+        // Passing the click count values
         binding.btnwork.text = "Work ($workClickCount)"
         binding.btnschool.text = "School ($schoolClickCount)"
         binding.btngeneral.text = "General ($generalClickCount)"
 
-        // setting click listeners for buttons
+        // Setting click listeners for buttons
         binding.btnwork.setOnClickListener(this)
         binding.btnschool.setOnClickListener(this)
         binding.btngeneral.setOnClickListener(this)
@@ -42,13 +42,20 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
         binding.btnworklogo.setOnClickListener(this)
         binding.btngeneralLogo.setOnClickListener(this)
 
-        //game button that redirects to gamification
+        //project list button redirecting to view projects
+        binding.projectBtn.setOnClickListener {
+            val intent = Intent(this, ExistingProject::class.java)
+            startActivity(intent)
+        }
+
+
+        // Game button that redirects to gamification
         binding.gameBtn.setOnClickListener {
             val intent = Intent(this, GameActivity::class.java)
             startActivity(intent)
         }
 
-        //navigation bar
+        // Navigation bar
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.dashboardID -> {
@@ -56,13 +63,11 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
                     startActivity(intent)
                     true
                 }
-
                 R.id.settingsID -> {
                     val intent = Intent(this, Settings::class.java)
                     startActivity(intent)
                     true
                 }
-
                 R.id.projectID -> {
                     val intent = Intent(this, ProjectList::class.java)
                     startActivity(intent)
@@ -75,9 +80,9 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
 
     private fun handleIntentData() {
         intent.extras?.let {
-            val projectName = it.getString("Project Name")
-            val startTime = it.getString("Start Time")
-            val endTime = it.getString("End Time")
+            val projectName = it.getString("Project name")
+            val startTime = it.getString("Start time")
+            val endTime = it.getString("End time")
 
             // Check if the extras are not null before setting them to the TextViews
             if (projectName != null) {
@@ -92,7 +97,7 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    //button that redirects user
+    // Button that redirects user
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnwork -> {
@@ -111,10 +116,6 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
                 generalClickCount++
                 binding.btngeneral.text = "General ($generalClickCount)"
                 val intent = Intent(this, ExistingProject::class.java)
-                startActivity(intent)
-            }
-            R.id.btnschoolLogo, R.id.btnworklogo, R.id.btngeneralLogo -> {
-                val intent = Intent(this, AddProject::class.java)
                 startActivity(intent)
             }
             R.id.btnschoolLogo -> {
