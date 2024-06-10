@@ -63,4 +63,10 @@
         android:textColor="@color/orangelight"
         android:textSize="16sp"
         android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/projectImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tempo_master_logo_trasnparency" />
 </LinearLayout>

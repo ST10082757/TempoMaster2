@@ -90,7 +90,11 @@ class AddProject : AppCompatActivity() {
             if (projectName.isNotEmpty() && description.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty() && category.isNotEmpty() && dateSelected.isNotEmpty()) {
                 databaseReference.push().setValue(project)
                     .addOnSuccessListener {
-                        Toast.makeText(this@AddProject, "Project added successfully", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@AddProject,
+                            "Project added successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         val bundle = Bundle().apply {
                             putString("Project name", projectName)
                             putString("Start time", startTime)
@@ -100,7 +104,8 @@ class AddProject : AppCompatActivity() {
                         clearFields()
                     }
                     .addOnFailureListener {
-                        Toast.makeText(this@AddProject, "Failed to add project", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@AddProject, "Failed to add project", Toast.LENGTH_SHORT)
+                            .show()
                     }
             } else {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
@@ -130,6 +135,25 @@ class AddProject : AppCompatActivity() {
                 camLauncher.launch(callCameraIntent)
             }*/
         //---------------------------------------------------------------------------------------------
+        //---------------------Camera Function-----------------------//
+        // Initialize camLauncher
+        camLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val data: Intent? = result.data
+                    capturedImage = data?.extras?.get("data") as? Bitmap
+                    // Handle the captured image here
+                    if (capturedImage != null) {
+                        // Do something with the captured image
+                        // For example, display it in an ImageView
+                        binding.imageView2.setImageBitmap(capturedImage)
+                    }
+                    Toast.makeText(this, "Picture taken", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Camera capture canceled", Toast.LENGTH_SHORT).show()
+                }
+            }
+
 
         binding.cameraBtn.setOnClickListener {
             // Check if camera permission is given/clicked
@@ -177,11 +201,7 @@ class AddProject : AppCompatActivity() {
     // Launch the camera to capture an image
     private fun launchCamera() {
         val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (callCameraIntent.resolveActivity(packageManager) != null) {
-            camLauncher.launch(callCameraIntent)
-        } else {
-            Toast.makeText(this, "No camera app found", Toast.LENGTH_SHORT).show()
-        }
+        camLauncher.launch(callCameraIntent)
     }
 
     companion object {
@@ -254,12 +274,10 @@ class AddProject : AppCompatActivity() {
                     project.imageUrl = uri.toString()
                     projectsRef.child(projectId).setValue(project).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            Toast.makeText(this, "Project saved successfully", Toast.LENGTH_SHORT)
-                                .show()
-                            //navigateToDashboard()
+                            Toast.makeText(this, "Project saved successfully", Toast.LENGTH_SHORT).show()
+                            navigateToDashboard()
                         } else {
-                            Toast.makeText(this, "Failed to save project", Toast.LENGTH_SHORT)
-                                .show()
+                            Toast.makeText(this, "Failed to save project", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -277,6 +295,7 @@ class AddProject : AppCompatActivity() {
             }
         }
     }
+
 
     private fun navigateToDashboard() {
         val intent = Intent(this, Dashboard::class.java)

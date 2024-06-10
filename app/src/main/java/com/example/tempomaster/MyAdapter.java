@@ -4,9 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
@@ -35,6 +41,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.startTime.setText(project.getStartTime());
         holder.endTime.setText(project.getEndTime());
         holder.category.setText(project.getCategory());
+
+        // Load project image using Glide
+        Glide.with(context)
+                .load(project.getImageUrl())
+                .apply(RequestOptions.placeholderOf(R.drawable.tempo_master_logo_trasnparency)
+                        .error(R.drawable.work_on_computer_employee_software_engineer_programmer_svgrepo_com))
+                .into(holder.projectImageView);
     }
 
     @Override
@@ -45,6 +58,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView projectName, description, date, startTime, endTime, category;
+        ImageView projectImageView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -54,6 +68,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             startTime = itemView.findViewById(R.id.tvStartTime);
             endTime = itemView.findViewById(R.id.tvEndTime);
             category = itemView.findViewById(R.id.tvCategory);
+            projectImageView = itemView.findViewById(R.id.projectImageView);
         }
     }
 }
