@@ -9,6 +9,7 @@ class Projects {
     val endTime: String? = null
     val category: String? = null
     val imageUrl: String? = null
+    val userId: String? = null
 }
 
 // Data class representing a project with default values
