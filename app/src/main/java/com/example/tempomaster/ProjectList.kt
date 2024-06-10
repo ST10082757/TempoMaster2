@@ -64,9 +64,13 @@ class ProjectList : AppCompatActivity() {
     ) {
         val minGoalDataSet = BarDataSet(minGoalEntries, "Min Goals").apply {
             color = Color.BLUE
+            valueTextSize = 16f // Increase the text size on the bars
+
         }
         val maxGoalDataSet = BarDataSet(maxGoalEntries, "Max Goals").apply {
             color = Color.RED
+            valueTextSize = 16f // Increase the text size on the bars
+
         }
         val data = BarData(minGoalDataSet, maxGoalDataSet).apply {
             barWidth = 0.3f // Set the width of the bars
@@ -78,43 +82,48 @@ class ProjectList : AppCompatActivity() {
 
         barChart.invalidate()
     }
+
     private fun updateProgressBarChart() {
         val calendar = Calendar.getInstance()
-        calendar.add(Calendar.MONTH, -1) // Get the date one month ago
-        val oneMonthAgo = calendar.timeInMillis
+        calendar.set(Calendar.DAY_OF_MONTH, 1) // Set the date to the first day of the current month
+        val firstDayOfMonth = calendar.timeInMillis
 
-        database.orderByChild("timestamp").startAt(oneMonthAgo.toDouble()).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val progressEntries = ArrayList<BarEntry>()
-                var index = 0f
-                for (snapshot in dataSnapshot.children) {
-                    val goal = snapshot.getValue(Goal::class.java)
-                    if (goal != null) {
-                        val yValue = if (goal.hours >= goal.minGoal && goal.hours <= goal.maxGoal) 1f else 0f
-                        progressEntries.add(BarEntry(index, yValue))
-                        index++
+        database.orderByChild("timestamp").startAt(firstDayOfMonth.toDouble())
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val progressEntries = ArrayList<BarEntry>()
+                    var index = 0f
+                    for (snapshot in dataSnapshot.children) {
+                        val goal = snapshot.getValue(String::class.java)
+                        val goalValues = goal?.split(" - ")?.map { it.toFloatOrNull() }
+                        if (goalValues != null && goalValues.size == 2 && goalValues[0] != null && goalValues[1] != null) {
+                            val yValue =
+                                if (goalValues[0]!! >= goalValues[1]!! && goalValues[0]!! <= goalValues[1]!!) 1f else 0f
+                            progressEntries.add(BarEntry(index, yValue))
+                            index++
+                        }
                     }
+                    val dataSet = BarDataSet(progressEntries, "Goal Progress").apply {
+                        color = Color.GREEN
+                        valueTextSize = 16f // Increase the text size on the bars
+                    }
+                    val data = BarData(dataSet).apply {
+                        barWidth = 0.3f // Set the width of the bars
+                    }
+                    progressBarChart.data = data
+                    progressBarChart.xAxis.textSize = 16f // Set the size of the labels
+                    progressBarChart.invalidate()
                 }
-                val dataSet = BarDataSet(progressEntries, "Goal Progress").apply {
-                    color = Color.GREEN
-                }
-                val data = BarData(dataSet).apply {
-                    barWidth = 0.3f // Set the width of the bars
-                }
-                progressBarChart.data = data
-                progressBarChart.invalidate()
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Handle error
-            }
-        })
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle error
+                }
+            })
     }
 }
-
-data class Goal(
-    val timestamp: Long,
-    val hours: Float,
-    val minGoal: Float,
-    val maxGoal: Float
-)
+    data class Goal(
+        val timestamp: Long,
+        val hours: Float,
+        val minGoal: Float,
+        val maxGoal: Float
+    )
