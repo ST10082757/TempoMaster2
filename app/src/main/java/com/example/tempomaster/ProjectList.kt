@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.example.tempomaster.databinding.ActivityDashboardBinding
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -28,10 +29,33 @@ class ProjectList : AppCompatActivity() {
     private var selectedStartTime: String = "00:00"
     private var selectedEndTime: String = "23:59"
     private var originalProgressEntries = ArrayList<BarEntry>()
+    private lateinit var binding: ActivityDashboardBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project_list)
+
+        //-------------------------Navigation bar----------------------//
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.dashboardID -> {
+                    val intent = Intent(this, Dashboard::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.settingsID -> {
+                    val intent = Intent(this, Settings::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.projectID -> {
+                    val intent = Intent(this, ProjectList::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
+        }
 
         goalsDatabase = Firebase.database.reference.child("goals")
         projectsDatabase = Firebase.database.reference.child("projects")
