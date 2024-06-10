@@ -73,6 +73,7 @@ class AddProject : AppCompatActivity() {
             val userId = FirebaseAuth.getInstance().currentUser?.uid
             
             val bundle = Bundle()
+
             bundle.putString("Project name", projectName)
             bundle.putString("Description", description)
             bundle.putString("Start time", startTime)
@@ -81,6 +82,7 @@ class AddProject : AppCompatActivity() {
             
             
              if (projectName.isNotEmpty() && description.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty() && category.isNotEmpty() && dateSelected.isNotEmpty()) {
+
                 val project = Project(projectName, description, dateSelected, startTime, endTime, category)
                 databaseReference.push().setValue(project)
                     .addOnSuccessListener {

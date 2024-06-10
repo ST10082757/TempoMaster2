@@ -30,8 +30,8 @@
             android:ems="10"
             android:gravity="center"
             android:inputType="text"
-            android:textColor="@color/white"
             android:text="@string/projectList"
+            android:textColor="@color/white"
             android:textSize="48sp" />
 
         <Space
