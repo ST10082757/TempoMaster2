@@ -48,6 +48,7 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
             startActivity(intent)
         }
 
+
         // Game button that redirects to gamification
         binding.gameBtn.setOnClickListener {
             val intent = Intent(this, GameActivity::class.java)
