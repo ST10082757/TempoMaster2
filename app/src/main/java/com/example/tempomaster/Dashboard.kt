@@ -54,19 +54,22 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
                 R.id.dashboardID -> {
                     val intent = Intent(this, Dashboard::class.java)
                     startActivity(intent)
+                    true
                 }
 
                 R.id.settingsID -> {
                     val intent = Intent(this, Settings::class.java)
                     startActivity(intent)
+                    true
                 }
 
                 R.id.projectID -> {
                     val intent = Intent(this, ProjectList::class.java)
                     startActivity(intent)
+                    true
                 }
+                else -> false
             }
-            true
         }
     }
 

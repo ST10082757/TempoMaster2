@@ -141,7 +141,6 @@ class AddProject : AppCompatActivity() {
             }
         }
         
-        
         // Bottom navigation bar
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
