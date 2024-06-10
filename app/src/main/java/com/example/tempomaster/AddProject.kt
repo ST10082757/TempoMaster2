@@ -79,7 +79,16 @@ class AddProject : AppCompatActivity() {
             bundle.putString("Start time", startTime)
             bundle.putString("End time", endTime)
             bundle.putString("Category", category)
-            
+
+            val project = Project(
+                projectName = projectName,
+                description = description,
+                date = dateSelected,
+                startTime = startTime,
+                endTime = endTime,
+                category = category,
+                userId = userId ?: ""
+            )
             
              if (projectName.isNotEmpty() && description.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty() && category.isNotEmpty() && dateSelected.isNotEmpty()) {
 
@@ -146,7 +155,6 @@ class AddProject : AppCompatActivity() {
                 launchCamera()
             }
         }
-        
         
         // Bottom navigation bar
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
@@ -307,7 +315,6 @@ class AddProject : AppCompatActivity() {
         
         return "$hours hours $minutes minutes"
     }
-
 
     data class Projects(
         val date: String,
