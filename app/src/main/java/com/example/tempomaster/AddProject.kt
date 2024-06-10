@@ -62,7 +62,7 @@ class AddProject : AppCompatActivity() {
                 )
             }
         }
-        
+
         // Add project button
         binding.clickAddPrj.setOnClickListener {
             val projectName = binding.AddProjName.text.toString()
@@ -71,21 +71,18 @@ class AddProject : AppCompatActivity() {
             val endTime = binding.txtEndTime.text.toString()
             val category = binding.spinnerCategory.selectedItem.toString()
             val userId = FirebaseAuth.getInstance().currentUser?.uid
-            
-            val bundle = Bundle()
-            bundle.putString("Project name", projectName)
-            bundle.putString("Description", description)
-            bundle.putString("Start time", startTime)
-            bundle.putString("End time", endTime)
-            bundle.putString("Category", category)
-            
-            
-             if (projectName.isNotEmpty() && description.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty() && category.isNotEmpty() && dateSelected.isNotEmpty()) {
+
+            if (projectName.isNotEmpty() && description.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty() && category.isNotEmpty() && dateSelected.isNotEmpty()) {
                 val project = Project(projectName, description, dateSelected, startTime, endTime, category)
                 databaseReference.push().setValue(project)
                     .addOnSuccessListener {
                         Toast.makeText(this@AddProject, "Project added successfully", Toast.LENGTH_SHORT).show()
-                        intentHelper.startExistingProjectActivity(this,ExistingProject::class.java,bundle)
+                        val bundle = Bundle().apply {
+                            putString("Project name", projectName)
+                            putString("Start time", startTime)
+                            putString("End time", endTime)
+                        }
+                        intentHelper.startDashboardActivity(this, Dashboard::class.java, bundle)
                         clearFields()
                     }
                     .addOnFailureListener {
@@ -95,6 +92,7 @@ class AddProject : AppCompatActivity() {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
             }
         }
+
 
         // Back button
         binding.backclick.setOnClickListener {
