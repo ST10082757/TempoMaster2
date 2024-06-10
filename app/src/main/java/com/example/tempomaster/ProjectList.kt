@@ -1,7 +1,9 @@
 package com.example.tempomaster
 
+import android.app.TimePickerDialog
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.BarData
@@ -18,6 +20,12 @@ class ProjectList : AppCompatActivity() {
     private lateinit var projectsDatabase: DatabaseReference
     private lateinit var barChart: BarChart
     private lateinit var progressBarChart: BarChart
+    private lateinit var selectTimePeriodButton: Button
+    private lateinit var undoButton: Button
+
+    private var selectedStartTime: String = "00:00"
+    private var selectedEndTime: String = "23:59"
+    private var originalProgressEntries = ArrayList<BarEntry>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +36,16 @@ class ProjectList : AppCompatActivity() {
 
         barChart = findViewById(R.id.barChart)
         progressBarChart = findViewById(R.id.progressBarChart)
+        selectTimePeriodButton = findViewById(R.id.selectTimePeriodButton)
+        undoButton = findViewById(R.id.undoButton)
+
+        selectTimePeriodButton.setOnClickListener {
+            showTimePickerDialog()
+        }
+
+        undoButton.setOnClickListener {
+            resetFilters()
+        }
 
         retrieveGoalData()
         retrieveProjectData()
@@ -92,10 +110,23 @@ class ProjectList : AppCompatActivity() {
                     val endTime = snapshot.child("endTime").getValue(String::class.java)?.split(":")?.map { it.toIntOrNull() }
                     if (startTime != null && startTime.size == 2 && endTime != null && endTime.size == 2) {
                         val startHour = startTime[0]!!
+                        val startMinute = startTime[1]!!
                         val endHour = endTime[0]!!
-                        val hoursWorked = if (endHour >= startHour) endHour - startHour else 24 - startHour + endHour
-                        progressEntries.add(BarEntry(index, hoursWorked.toFloat()))
-                        index++
+                        val endMinute = endTime[1]!!
+                        val selectedStartHour = selectedStartTime.split(":")[0].toInt()
+                        val selectedStartMinute = selectedStartTime.split(":")[1].toInt()
+                        val selectedEndHour = selectedEndTime.split(":")[0].toInt()
+                        val selectedEndMinute = selectedEndTime.split(":")[1].toInt()
+
+                        if (isTimeWithinSelectedPeriod(startHour, startMinute, endHour, endMinute, selectedStartHour, selectedStartMinute, selectedEndHour, selectedEndMinute)) {
+                            val hoursWorked = if (endHour >= startHour) endHour - startHour else 24 - startHour + endHour
+                            progressEntries.add(BarEntry(index, hoursWorked.toFloat()))
+                            index++
+                        } else {
+                            val hoursWorked = if (endHour >= startHour) endHour - startHour else 24 - startHour + endHour
+                            originalProgressEntries.add(BarEntry(index, hoursWorked.toFloat()))
+                            index++
+                        }
                     }
                 }
                 updateProgressBarChart(progressEntries)
@@ -118,5 +149,42 @@ class ProjectList : AppCompatActivity() {
         progressBarChart.data = data
         progressBarChart.xAxis.textSize = 16f // Set the size of the labels
         progressBarChart.invalidate()
+    }
+
+    private fun isTimeWithinSelectedPeriod(
+        startHour: Int,
+        startMinute: Int,
+        endHour: Int,
+        endMinute: Int,
+        selectedStartHour: Int,
+        selectedStartMinute: Int,
+        selectedEndHour: Int,
+        selectedEndMinute: Int
+    ): Boolean {
+        val startTimeInMinutes = startHour * 60 + startMinute
+        val endTimeInMinutes = endHour * 60 + endMinute
+        val selectedStartTimeInMinutes = selectedStartHour * 60 + selectedStartMinute
+        val selectedEndTimeInMinutes = selectedEndHour * 60 + selectedEndMinute
+
+        return startTimeInMinutes >= selectedStartTimeInMinutes && endTimeInMinutes <= selectedEndTimeInMinutes
+    }
+
+    private fun showTimePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val startTimePicker = TimePickerDialog(this, { _, hourOfDay, minute ->
+            selectedStartTime = String.format("%02d:%02d", hourOfDay, minute)
+            val endTimePicker = TimePickerDialog(this, { _, endHour, endMinute ->
+                selectedEndTime = String.format("%02d:%02d", endHour, endMinute)
+                retrieveProjectData()
+            }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true)
+            endTimePicker.show()
+        }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true)
+        startTimePicker.show()
+    }
+
+    private fun resetFilters() {
+        selectedStartTime = "00:00"
+        selectedEndTime = "23:59"
+        updateProgressBarChart(originalProgressEntries)
     }
 }
