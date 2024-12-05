@@ -6,7 +6,7 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/projectName"
+        android:id="@+id/tvProjectName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Project Name"
@@ -16,7 +16,7 @@
         android:layout_marginBottom="8dp" />
 
     <TextView
-        android:id="@+id/projectDescription"
+        android:id="@+id/tvProjectDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Project Description"
@@ -26,31 +26,47 @@
         android:layout_marginBottom="8dp" />
 
     <TextView
-        android:id="@+id/startDate"
+        android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start Date"
+        android:text="Date"
         android:textColor="@color/orangelight"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_marginBottom="8dp" />
 
     <TextView
-        android:id="@+id/endDate"
+        android:id="@+id/tvStartTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="End Date"
+        android:text="@string/Start_Time"
         android:textColor="@color/orangelight"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_marginBottom="8dp" />
 
     <TextView
-        android:id="@+id/category"
+        android:id="@+id/tvEndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/End_Time"
+        android:textColor="@color/orangelight"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/tvCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Category"
         android:textColor="@color/orangelight"
         android:textSize="16sp"
         android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/projectImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tempo_master_logo_trasnparency" />
 </LinearLayout>

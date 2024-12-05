@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1000628700185",
+    "firebase_url": "https://tempo-master-default-rtdb.firebaseio.com",
     "project_id": "tempo-master",
     "storage_bucket": "tempo-master.appspot.com"
   },

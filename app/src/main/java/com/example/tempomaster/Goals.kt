@@ -79,7 +79,7 @@ class Goals : AppCompatActivity() {
                     true
                 }
                 R.id.projectID -> {
-                    val intent = Intent(this, ExistingProject::class.java)
+                    val intent = Intent(this, ProjectList::class.java)
                     startActivity(intent)
                     true
                 }
